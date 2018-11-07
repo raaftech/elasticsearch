@@ -70,6 +70,11 @@ fi
 # Unpack the previously fetched and validated archive.
 tar xzf /tmp/elasticsearch.tar.gz -C /elasticsearch --strip-components=1
 
+# Move a few default files so they won't be overwritten by our customizations later on.
+mv /elasticsearch/config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml.orig
+mv /elasticsearch/config/jvm.options /elasticsearch/config/jvm.options.orig
+mv /elasticsearch/config/log4j2.properties /elasticsearch/config/log4j2.properties.orig
+
 # Clean up installation artifacts.
 rm -r "/tmp/elasticsearch.tar.gz.asc" "/tmp/elasticsearch.tar.gz"
 mv /tmp/setup.sh /elasticsearch/setup.sh
