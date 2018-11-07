@@ -18,7 +18,7 @@ ENV HOME="/elasticsearch" \
     ES_ARCHIVE_BASEURL="https://artifacts.elastic.co/downloads/elasticsearch" \
     ES_ARCHIVE_KEYID="46095ACC8548582C1A2699A9D27D666CD88E42B4" \
     ES_CLUSTER_NAME="elasticsearch-default" \
-    ES_DISCOVERY_SERVICE="elasticsearch-discovery" \
+    ES_DISCOVERY_SERVICE="" \
     ES_HTTP_CORS_ALLOW_ORIGIN="*" \
     ES_HTTP_CORS_ENABLE="true" \
     ES_MAX_LOCAL_STORAGE_NODES="1" \
@@ -50,20 +50,21 @@ LABEL   architecture="x86_64" \
         vendor="Elastic" \
         version="v$ES_VERSION"
 
+
+# Copy the Elasticsearch customized configuration files.
+COPY --chown=185:0 config /elasticsearch/custom
+
+# Copy the Elasticsearch run script.
+COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
+
 # Copy the Elasticsearch setup script.
 COPY scripts/setup.sh /tmp/setup.sh
 
-# Copy the run script (note: needs to be done before setup script).
-COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
-
 # Run setup script.
-RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${PROXY_URL} ${NO_PROXY}
+RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${ES_DISCOVERY_SERVICE} ${PROXY_URL} ${NO_PROXY}
 
 # Remove dangling home.
 RUN rm -rf /home
-
-# Copy Elasticsearch configuration (note: needs to be done after setup script).
-COPY --chown=185:0 config /elasticsearch/config
 
 # Switch to the previously created, non-privileged user.
 USER 185

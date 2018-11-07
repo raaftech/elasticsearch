@@ -3,8 +3,9 @@
 ARCHIVE_URL=$1
 CHECKSUM_URL=$2
 GNUPG_KEYID=$3
-PROXY_URL=$4
-NO_PROXY=$5
+DISCOVERY_SERVICE=$4
+PROXY_URL=$5
+NO_PROXY=$6
 
 # Check if run as root.
 if [ "$EUID" -ne 0 ]
@@ -70,10 +71,20 @@ fi
 # Unpack the previously fetched and validated archive.
 tar xzf /tmp/elasticsearch.tar.gz -C /elasticsearch --strip-components=1
 
-# Move a few default files so they won't be overwritten by our customizations later on.
-mv /elasticsearch/config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml.orig
-mv /elasticsearch/config/jvm.options /elasticsearch/config/jvm.options.orig
-mv /elasticsearch/config/log4j2.properties /elasticsearch/config/log4j2.properties.orig
+# Handle discovery service setting specially.
+if [ -z "$DISCOVERY_SERVICE" ]; then
+    mv /elasticsearch/config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml.orig
+    cat /elasticsearch/custom/elasticsearch.yml | grep -v '^.*ping.unicast.hosts:.*$' > /elasticsearch/config/elasticsearch.yml
+    rm /elasticsearch/custom/elasticsearch.yml
+fi
+
+# Replace default scripts with customized ones.
+for file in $(find /elasticsearch/custom -type f); do
+    target=$(echo $file | sed 's|/custom/|/config/|g')
+    mv "$target" "$target.orig"
+    mv "$file" "$target"
+done
+rmdir /elasticsearch/custom
 
 # Clean up installation artifacts.
 rm -r "/tmp/elasticsearch.tar.gz.asc" "/tmp/elasticsearch.tar.gz"
