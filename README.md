@@ -1,5 +1,6 @@
 # Elasticsearch Docker.
 
- * `docker build --tag raaftech/elasticsearch .`
- * `docker run -detach --publish 9200:9200 --publish 9300:9300 --name elasticsearch raaftech/elasticsearch`
- * `docker logs --follow elasticsearch`
+ * `docker build -t raaftech/elasticsearch .`
+ * `docker run -d -p 9200:9200 -p 9300:9300 --name elasticsearch raaftech/elasticsearch`
+ * `docker logs -f elasticsearch`
+ * `curl http://localhost:9200`
