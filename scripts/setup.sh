@@ -73,6 +73,7 @@ tar xzf /tmp/elasticsearch.tar.gz -C /elasticsearch --strip-components=1
 # Clean up installation artifacts.
 rm -r "/tmp/elasticsearch.tar.gz.asc" "/tmp/elasticsearch.tar.gz"
 mv /tmp/setup.sh /elasticsearch/setup.sh
+chmod 755 /elasticsearch/*.sh
 
 # Create a few extra directories and set ownership.
 mkdir -p /elasticsearch/config/scripts /elasticsearch/plugins /elasticsearch/data

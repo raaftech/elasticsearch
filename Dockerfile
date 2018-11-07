@@ -60,7 +60,7 @@ COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
 COPY scripts/setup.sh /tmp/setup.sh
 
 # Run setup script.
-RUN /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${PROXY_URL} ${NO_PROXY}
+RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${PROXY_URL} ${NO_PROXY}
 
 # Remove dangling home.
 RUN rm -rf /home
