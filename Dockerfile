@@ -50,8 +50,11 @@ LABEL   architecture="x86_64" \
         vendor="Elastic" \
         version="v$ES_VERSION"
 
-# Copy Elasticsearch setup script.
+# Copy the Elasticsearch setup script.
 COPY scripts/setup.sh /tmp/setup.sh
+
+# Copy the run script (note: needs to be done before setup script).
+COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
 
 # Run setup script.
 RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${PROXY_URL} ${NO_PROXY}
@@ -59,11 +62,8 @@ RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_C
 # Remove dangling home.
 RUN rm -rf /home
 
-# Copy Elasticsearch configuration.
+# Copy Elasticsearch configuration (note: needs to be done after setup script).
 COPY --chown=185:0 config /elasticsearch/config
-
-# Copy the run script.
-COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
 
 # Switch to the previously created, non-privileged user.
 USER 185
