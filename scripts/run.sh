@@ -4,14 +4,37 @@ echo "Starting Elasticsearch ${ES_VERSION}"
 
 BASE=/elasticsearch
 
+# Handle discovery service setting. When unset, take out the
+# ping.unicast.hosts setting. Usually unset when running
+# standalone in Docker directly but needed by Kubernetes.
+if [ -z "$DISCOVERY_SERVICE" ]; then
+    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*ping.unicast.hosts:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+fi
+
+# Rewrite ES_NODE_NAME to HOSTNAME if the former is unset, which
+# is usually the case when running standalone in Docker directly.
+# In Kubernetes, one usually sets ES_NODE_NAME to metadata.name.
+if [ -z "$ES_NODE_NAME" ]; then
+    ES_NODE_NAME="$HOSTNAME"
+    cat "$BASE/config/elasticsearch.yml" | sed 's|\${ES_NODE_NAME}|\${HOSTNAME}|g' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+fi
+
+# If version is 6.5.0 or higher, we allow setting of
+# node.store.allow_mmapfs. Else, take this setting out.
+ES_VERSION_CONCAT=$(echo $ES_VERSION | sed 's|\.||g')
+if (( $ES_VERSION_CONCAT < 650 )); then
+    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*store:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+
+    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*allow_mmapfs:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+fi
+
 # Allow for memlock if enabled.
 if [ "${ES_MEMORY_LOCK}" == "true" ]; then
     ulimit -l unlimited
-fi
-
-# Set a random node name if not set.
-if [ -z "${ES_NODE_NAME}" ]; then
-    ES_NODE_NAME="$(uuidgen)"
 fi
 
 # Create a temporary folder for Elasticsearch ourselves,

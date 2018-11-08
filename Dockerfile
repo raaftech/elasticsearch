@@ -15,7 +15,7 @@ ARG NO_PROXY=""
 ENV HOME="/elasticsearch" \
     PATH="/elasticsearch/bin:$PATH" \
     ES_ALLOW_MMAPFS="true" \
-    ES_JAVA_OPTS="-Des.scripting.exception_for_missing_value=true -Xms1g -Xmx1g" \
+    ES_JAVA_OPTS="-Xms1g -Xmx1g -XX:ParallelGCThreads=1" \
     ES_ARCHIVE_BASEURL="https://artifacts.elastic.co/downloads/elasticsearch" \
     ES_ARCHIVE_KEYID="46095ACC8548582C1A2699A9D27D666CD88E42B4" \
     ES_CLUSTER_NAME="elasticsearch-default" \

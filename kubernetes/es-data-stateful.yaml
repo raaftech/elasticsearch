@@ -31,7 +31,7 @@ spec:
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_JAVA_OPTS
-          value: "-Des.scripting.exception_for_missing_value=true -Xms1g -Xmx1g"
+          value: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
         - name: ES_NODE_DATA
           value: "true"
         - name: ES_NODE_INGEST

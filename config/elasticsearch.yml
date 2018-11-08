@@ -9,6 +9,7 @@ node:
   max_local_storage_nodes: ${ES_MAX_LOCAL_STORAGE_NODES}
   store:
     allow_mmapfs: ${ES_ALLOW_MMAPFS}
+
 processors: ${PROCESSORS:1}
 
 network.host: ${ES_NETWORK_HOST}
