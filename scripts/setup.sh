@@ -71,11 +71,20 @@ fi
 # Unpack the previously fetched and validated archive.
 tar xzf /tmp/elasticsearch.tar.gz -C /elasticsearch --strip-components=1
 
-# Handle discovery service setting specially.
+# Handle discovery service setting. When unset, take out the
+# ping.unicast.hosts setting. Usually unset when running standalone
+# in Docker directly but needed by Kubernetes.
 if [ -z "$DISCOVERY_SERVICE" ]; then
-    mv /elasticsearch/config/elasticsearch.yml /elasticsearch/config/elasticsearch.yml.orig
-    cat /elasticsearch/custom/elasticsearch.yml | grep -v '^.*ping.unicast.hosts:.*$' > /elasticsearch/config/elasticsearch.yml
-    rm /elasticsearch/custom/elasticsearch.yml
+    cat /elasticsearch/custom/elasticsearch.yml | grep -v '^.*ping.unicast.hosts:.*$' > /tmp/elasticsearch.yml
+    mv /tmp/elasticsearch.yml /elasticsearch/custom/elasticsearch.yml
+fi
+
+# Rewrite ES_NODE_NAME to HOSTNAME if the former is unset, which
+# is usually the case when running standalone in Docker directly.
+# In Kubernetes, one usually sets ES_NODE_NAME to metadata.name.
+if [ -z "$ES_NODE_NAME" ]; then
+    cat /elasticsearch/custom/elasticsearch.yml | sed 's|\${ES_NODE_NAME}|\${HOSTNAME}|g' > /tmp/elasticsearch.yml
+    mv /tmp/elasticsearch.yml /elasticsearch/custom/elasticsearch.yml
 fi
 
 # Replace default scripts with customized ones.
