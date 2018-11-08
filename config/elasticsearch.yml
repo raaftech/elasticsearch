@@ -29,4 +29,7 @@ discovery:
     ping.unicast.hosts: ${ES_DISCOVERY_SERVICE}
     minimum_master_nodes: ${ES_NUMBER_OF_MASTERS}
 
+index.store.type: ${ES_INDEX_STORE_TYPE}
+
 xpack.ml.enabled: false
+
