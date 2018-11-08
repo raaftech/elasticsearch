@@ -21,6 +21,7 @@ ENV HOME="/elasticsearch" \
     ES_DISCOVERY_SERVICE="" \
     ES_HTTP_CORS_ALLOW_ORIGIN="*" \
     ES_HTTP_CORS_ENABLE="true" \
+    ES_INDEX_STORE_TYPE="fs" \
     ES_MAX_LOCAL_STORAGE_NODES="1" \
     ES_MEMORY_LOCK="false" \
     ES_NETWORK_HOST="_site_" \
