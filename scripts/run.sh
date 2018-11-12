@@ -7,7 +7,7 @@ BASE=/elasticsearch
 # Handle discovery service setting. When unset, take out the
 # ping.unicast.hosts setting. Usually unset when running
 # standalone in Docker directly but needed by Kubernetes.
-if [ -z "$DISCOVERY_SERVICE" ]; then
+if [ -z "$ES_DISCOVERY_SERVICE" ]; then
     cat "$BASE/config/elasticsearch.yml" | grep -v '^.*ping.unicast.hosts:.*$' > "/tmp/elasticsearch.yml"
     mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
 fi
