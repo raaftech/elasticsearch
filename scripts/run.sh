@@ -23,7 +23,7 @@ fi
 
 # If version is 6.5.0 or higher, we allow setting of
 # node.store.allow_mmapfs. Else, take this setting out.
-ES_VERSION_CONCAT=$(echo $ES_VERSION | sed 's|\.||g')
+ES_VERSION_CONCAT=$(echo $ES_VERSION | sed -e 's|[a-z]||g' -e 's|[A-Z]||g' -e 's|\.||g' -e 's|_||g' -e 's|\-||g' | cut -c 1-3)
 if (( $ES_VERSION_CONCAT < 650 )); then
     cat "$BASE/config/elasticsearch.yml" | grep -v '^.*store:.*$' > "/tmp/elasticsearch.yml"
     mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
