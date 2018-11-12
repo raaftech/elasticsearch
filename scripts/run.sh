@@ -22,14 +22,20 @@ if [ -z "$ES_NODE_NAME" ]; then
 fi
 
 # If version is 6.5.0 or higher, we allow setting of
-# node.store.allow_mmapfs. Else, take this setting out.
+# node.store.allow_mmapfs and we adjust the log pattern format.
 ES_VERSION_CONCAT=$(echo $ES_VERSION | sed -e 's|[a-z]||g' -e 's|[A-Z]||g' -e 's|\.||g' -e 's|_||g' -e 's|\-||g' | cut -c 1-3)
 if (( $ES_VERSION_CONCAT < 650 )); then
+    # Not 6.5+, take out 'store:' line.
     cat "$BASE/config/elasticsearch.yml" | grep -v '^.*store:.*$' > "/tmp/elasticsearch.yml"
     mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
 
+    # Not 6.5+, take out 'allow_mmapfs:' line.
     cat "$BASE/config/elasticsearch.yml" | grep -v '^.*allow_mmapfs:.*$' > "/tmp/elasticsearch.yml"
     mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+
+    # Not 6.5+, take out '[%node_name]' element.
+    cat "$BASE/config/log4j2.properties" | sed 's|\[%node_name\]%marker |%marker|g' > "/tmp/log4j2.properties"
+    mv /tmp/log4j2.properties "$BASE/config/log4j2.properties"
 fi
 
 # Allow for memlock if enabled.
