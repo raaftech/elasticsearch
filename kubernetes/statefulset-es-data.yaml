@@ -4,13 +4,14 @@ metadata:
   name: es-data
   labels:
     component: elasticsearch
+    http: enabled
     role: data
 spec:
   selector:
     matchLabels:
       component: elasticsearch
       role: data
-  serviceName: elasticsearch-data
+  serviceName: es-transport
   replicas: 3
   template:
     metadata:
@@ -27,7 +28,7 @@ spec:
         - name: ES_CLUSTER_NAME
           value: "es-cluster"
         - name: ES_DISCOVERY_SERVICE
-          value: "elasticsearch-discovery"
+          value: "es-transport"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_JAVA_OPTS
@@ -82,4 +83,4 @@ spec:
       accessModes: [ ReadWriteOnce ]
       resources:
         requests:
-          storage: 12Gi
+          storage: 4Gi

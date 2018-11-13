@@ -1,25 +1,21 @@
-apiVersion: apps/v1
-kind: StatefulSet
+apiVersion: apps/v1beta1
+kind: Deployment
 metadata:
-  name: es-master
+  name: es-ingest
   labels:
     component: elasticsearch
-    role: master
+    http: enabled
+    role: ingest
 spec:
-  selector:
-    matchLabels:
-      component: elasticsearch
-      role: master
-  serviceName: elasticsearch-master
-  replicas: 2
+  replicas: 3
   template:
     metadata:
       labels:
         component: elasticsearch
-        role: master
+        role: ingest
     spec:
       containers:
-      - name: es-master
+      - name: es-ingest
         image: raaftech/elasticsearch:6.5.0
         env:
         - name: ES_ALLOW_MMAPFS
@@ -27,19 +23,19 @@ spec:
         - name: ES_CLUSTER_NAME
           value: "es-cluster"
         - name: ES_DISCOVERY_SERVICE
-          value: "elasticsearch-discovery"
+          value: "es-transport"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_JAVA_OPTS
           value: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
+        - name: ES_NETWORK_HOST
+          value: "_site_,_lo_"
         - name: ES_NODE_DATA
           value: "false"
         - name: ES_NODE_INGEST
-          value: "false"
-        - name: ES_NODE_MASTER
           value: "true"
-        - name: ES_NUMBER_OF_MASTERS
-          value: "2"
+        - name: ES_NODE_MASTER
+          value: "false"
         - name: ES_NODE_NAME
           valueFrom:
             fieldRef:
@@ -58,6 +54,8 @@ spec:
           limits:
             cpu: 1
         ports:
+        - containerPort: 9200
+          name: http
         - containerPort: 9300
           name: transport
         livenessProbe:
@@ -65,15 +63,16 @@ spec:
             port: transport
           initialDelaySeconds: 20
           periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /_cluster/health
+            port: http
+          initialDelaySeconds: 20
+          timeoutSeconds: 5
         volumeMounts:
         - name: storage
           mountPath: /elasticsearch/data
-  volumeClaimTemplates:
-  - metadata:
-      name: storage
-    spec:
-      storageClassName: glusterfs-storage
-      accessModes: [ ReadWriteOnce ]
-      resources:
-        requests:
-          storage: 2Gi
+      volumes:
+          - emptyDir:
+              medium: ""
+            name: storage
