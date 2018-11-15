@@ -4,8 +4,6 @@ metadata:
   name: es-master
   labels:
     component: elasticsearch
-    http: disabled
-    role: master
 spec:
   selector:
     matchLabels:
@@ -17,11 +15,13 @@ spec:
     metadata:
       labels:
         component: elasticsearch
+        http: disabled
         role: master
     spec:
       containers:
       - name: es-master
         image: raaftech/elasticsearch:6.5.0
+        imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS
           value: "false"
@@ -32,7 +32,7 @@ spec:
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_JAVA_OPTS
-          value: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
+          value: "-Xms2g -Xmx2g -XX:ParallelGCThreads=1"
         - name: ES_NODE_DATA
           value: "false"
         - name: ES_NODE_INGEST
@@ -56,8 +56,10 @@ spec:
         resources:
           requests:
             cpu: 0.25
+            memory: 4Gi
           limits:
             cpu: 1
+            memory: 4Gi
         ports:
         - containerPort: 9300
           name: transport

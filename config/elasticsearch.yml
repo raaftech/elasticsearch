@@ -34,3 +34,5 @@ discovery:
 index.store.type: ${ES_INDEX_STORE_TYPE}
 
 xpack.ml.enabled: false
+
+cluster.remote.connect: false

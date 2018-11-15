@@ -4,19 +4,19 @@ metadata:
   name: es-ingest
   labels:
     component: elasticsearch
-    http: enabled
-    role: ingest
 spec:
   replicas: 3
   template:
     metadata:
       labels:
         component: elasticsearch
+        http: disabled
         role: ingest
     spec:
       containers:
       - name: es-ingest
         image: raaftech/elasticsearch:6.5.0
+        imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS
           value: "false"
@@ -27,7 +27,7 @@ spec:
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_JAVA_OPTS
-          value: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
+          value: "-Xms2g -Xmx2g -XX:ParallelGCThreads=1"
         - name: ES_NETWORK_HOST
           value: "_site_,_lo_"
         - name: ES_NODE_DATA
@@ -50,9 +50,12 @@ spec:
               resource: limits.cpu
         resources:
           requests:
-            cpu: 0.25
-          limits:
             cpu: 1
+            memory: 4Gi
+          limits:
+            cpu: 2
+            memory: 4Gi
+
         ports:
         - containerPort: 9200
           name: http
