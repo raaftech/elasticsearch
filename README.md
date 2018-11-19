@@ -2,9 +2,10 @@
 
 Although Elasticsearch has some great documentation about [using Elasticsearch in a Dockerized environment](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html), it focuses mainly on Docker Compose for anything beyond a single instance. Later, @pires has done some great work to get Elasticsearch to play nice with Kubernetes.
 
-This project, inspired by [the work](/pires/kubernetes-elasticsearch-cluster) done by @pires, allows you to run your own large-scale Elasticsearch production environment on Kubernetes or Openshift, simplifies the Kubernetes aspect of things a little (amongst others also the elimination of the requirement to run privileged initContainers) and does some extra magic to make various older and newer (latest) versions of Elasticsearch play nice with regards to the introduction and deprecation of certain environment variables.
+This project, inspired by [the work](https://github.com/pires/kubernetes-elasticsearch-cluster) done by @pires, allows you to run your own large-scale Elasticsearch production environment on Kubernetes or Openshift, simplifies the Kubernetes aspect of things a little (amongst others also the elimination of the requirement to run privileged initContainers) and does some extra magic to make various older and newer (latest) versions of Elasticsearch play nice with regards to the introduction and deprecation of certain environment variables.
 
 In the sections below, you'll find out how to build and run this project's Docker image standalone and how to use the included kubernetes files to deploy an n-scale cluster, tested on Kubernetes 1.10+ and OpenShift 3.9.
+
 
 ## Table of Contents
 
@@ -12,6 +13,7 @@ In the sections below, you'll find out how to build and run this project's Docke
 * [Building Docker images](#docker)
 * [Deploying on Kubernetes](#kubernetes)
 * [Using OpenShift](#openshift)
+
 
 <a id="prereqs">
 
@@ -21,7 +23,7 @@ You need a reasonably recent version of Docker to build and run the Docker image
 
 To run on Kubernetes, you need a Kubernetes cluster. I tested with version 1.10 and 1.12 and the Kubernetes services included with OpenShift 3.9. Memory and compute requirements might vary wildly, but to give you an idea: We're running a fairly simple 12 node Elasticsearch cluster with 3 masters, 3 data nodes, 3 ingest notes and 3 client nodes, totalling about 12 cores, 60GB of ram and 100GB of storage.
 
-Finally, I'm assuming a fairly recent modern OS environment where you have the `docker` and `kubectl` commands available via your PATH environment variable and know how to get by using either `cmd.exe`, `powershell.exe`, `ksh` or `bash`.
+Finally, I'm assuming a fairly recent modern OS environment where you have the `docker` and `kubectl` commands available via your PATH environment variable and know how to get by using either `cmd.exe`, `powershell`, `ksh` or `bash`.
 
 
 <a id="docker">
