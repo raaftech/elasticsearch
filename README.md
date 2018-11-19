@@ -47,10 +47,10 @@ Alright, without further ado, let's get that standalone Docker image up + runnin
 
 And to clean up afterwards:
 
- * docker stop es
- * docker container purge (optional, not needed when `--rm` was passed to `docker run`)
- * docker volume purge (optional, cleans up the volume entries)
- * docker rmi someorg/elasticsearch (removes the previously built image)
+ * `docker stop es`
+ * `docker container purge` (optional, not needed when `--rm` was passed to `docker run`)
+ * `docker volume purge` (optional, cleans up the volume entries)
+ * `docker rmi someorg/elasticsearch` (removes the previously built image)
 
 If you completed the steps above, congratulations, you ran your first (I'm assuming) Elasticsearch! This instance did not get configured with any of the options that the various environment variables make possible, as the default values of those variables essentially enable a standalone Elasticsearch node with all bells + whistles.
 
