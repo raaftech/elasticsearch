@@ -38,7 +38,7 @@ The [Dockerfile](/Dockerfile) inherits from Red Hat's [redhat-openjdk-18/openjdk
 
 Specifically, Red Hat's "OpenJDK Life Cycle and Support Policy" document mentions: *"Q: Do the lifecycle dates apply to the OpenJDK images available in OpenShift? A: Yes. The lifecycle for OpenJDK 8 applies the the container image available in the Red Hat Container Catalog, and the OpenJDK 11 lifecycle will apply when it is released."*
 
-Alright, without further ado, let's get that standalone Docker image up + running! First off, you should `git clone` this repository somewhere, start your command shell of choice and `cd` in there. Run the following:
+Alright, without further ado, let's get that standalone Docker image up + running! First off, you should `git clone` this repository somewhere, start your command shell of choice and `cd` into the cloned repository's directory. Run the following:
 
  * `docker build -t someorg/elasticsearch .`
  * `docker run -d -p 9200:9200 -p 9300:9300 --rm --name es someorg/elasticsearch`
@@ -48,9 +48,10 @@ Alright, without further ado, let's get that standalone Docker image up + runnin
 And to clean up afterwards:
 
  * `docker stop es`
- * `docker container purge` (optional, not needed when `--rm` was passed to `docker run`)
- * `docker volume purge` (optional, cleans up the volume entries)
+ * `docker container prune` (optional, not needed when `--rm` was passed to `docker run`)
+ * `docker volume prune` (optional, cleans up the volume entries)
  * `docker rmi someorg/elasticsearch` (removes the previously built image)
+ * `docker rmi registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift` (removes the parent image)
 
 If you completed the steps above, congratulations, you ran your first (I'm assuming) Elasticsearch! This instance did not get configured with any of the options that the various environment variables make possible, as the default values of those variables essentially enable a standalone Elasticsearch node with all bells + whistles.
 
