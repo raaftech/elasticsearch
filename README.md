@@ -32,19 +32,29 @@ Finally, I'm assuming a fairly recent modern OS environment where you have the `
 
 ## Building Docker images
 
-First off, you should `git clone` this repository somewhere, start your command shell of choice and `cd` in there.
-
 Everything is essentially built around a minimal Linux + OpenJDK image, on which we extract the standard Elasticsearch tar distribution, which is installed and started by custom [setup.sh](/scripts/setup.sh) and [run.sh](/scripts/run.sh) scripts.
 
 The [Dockerfile](/Dockerfile) inherits from Red Hat's [redhat-openjdk-18/openjdk18-openshift](https://github.com/jboss-container-images/openjdk) image. Essentially, any image with an OpenJDK of version 8 or higher (yes, Elasticsearch 6.2 and higher can actually run with OpenJDK 9/10/11) and the `bash` and `curl` commands could run this. The advantage of the Red Hat images is that they [promise to keep these updated](https://access.redhat.com/articles/1299013) as oposed to the [state of affairs](https://blog.joda.org/2018/08/java-is-still-available-at-zero-cost.html) with the regular OpenJDK images.
 
 Specifically, Red Hat's "OpenJDK Life Cycle and Support Policy" document mentions: *"Q: Do the lifecycle dates apply to the OpenJDK images available in OpenShift? A: Yes. The lifecycle for OpenJDK 8 applies the the container image available in the Red Hat Container Catalog, and the OpenJDK 11 lifecycle will apply when it is released."*
 
- * `docker build -t raaftech/elasticsearch .`
- * `docker run -d -p 9200:9200 -p 9300:9300 --name elasticsearch raaftech/elasticsearch`
- * `docker logs -f elasticsearch`
- * `curl http://localhost:9200`
+Alright, without further ado, let's get that standalone Docker image up + running! First off, you should `git clone` this repository somewhere, start your command shell of choice and `cd` in there. Run the following:
 
+ * `docker build -t someorg/elasticsearch .`
+ * `docker run -d -p 9200:9200 -p 9300:9300 --rm --name es someorg/elasticsearch`
+ * `docker logs -f es` (<ctrl-c> when you've seen enough)
+ * `curl http://localhost:9200` (returns the main info json)
+
+And to clean up afterwards:
+
+ * docker stop es
+ * docker container purge (optional, not needed when `--rm` was passed to `docker run`)
+ * docker volume purge (optional, cleans up the volume entries)
+ * docker rmi someorg/elasticsearch (removes the previously built image)
+
+If you completed the steps above, congratulations, you ran your first (I'm assuming) Elasticsearch! This instance did not get configured with any of the options that the various environment variables make possible, as the default values of those variables essentially enable a standalone Elasticsearch node with all bells + whistles.
+
+The changing of those environment variables and a few Docker specific settings is what makes it possible for a single Docker image to assume different roles in the Elasticsearch environment and it's this that is key to running this setup in a Kubernetes environment. For more info on that, read on!
 
 <a id="kubernetes">
 
