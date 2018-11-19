@@ -32,7 +32,11 @@ Finally, I'm assuming a fairly recent modern OS environment where you have the `
 
 ## Building Docker images
 
-Explain Docker's part in all this, I.e:
+First off, you should `git clone` this repository somewhere, start your command shell of choice and `cd` in there.
+
+Everything is essentially built around a minimal Linux + OpenJDK image, on which we extract the standard Elasticsearch tar distribution, which is installed and started by custom [setup.sh](/blob/master/scripts/setup.sh) and [run.sh](/blob/master/scripts/run.sh) scripts.
+
+The [Dockerfile](/blob/master/Dockerfile) inherits from Red Hat's [redhat-openjdk-18/openjdk18-openshift](https://github.com/jboss-container-images/openjdk) image. Essentially, any image with an OpenJDK of version 8 or higher (yes, Elasticsearch 6.2 and higher can actually run with OpenJDK 9/10/11) and the `bash` and `curl` commands could run this. The advantage of the Red Hat images is that they [promise to keep these updated](https://access.redhat.com/articles/1299013) as oposed to the [state of affairs](https://blog.joda.org/2018/09/do-not-fall-into-oracles-java-11-trap.html) with the regular OpenJDK images. Specifically, Red Hat's *OpenJDK Life Cycle and Support Policy* mentions: "Q: Do the lifecycle dates apply to the OpenJDK images available in OpenShift? A: Yes. The lifecycle for OpenJDK 8 applies the the container image available in the Red Hat Container Catalog, and the OpenJDK 11 lifecycle will apply when it is released."
 
  * `docker build -t raaftech/elasticsearch .`
  * `docker run -d -p 9200:9200 -p 9300:9300 --name elasticsearch raaftech/elasticsearch`
