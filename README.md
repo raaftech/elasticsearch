@@ -13,7 +13,7 @@ As of this writing (2018-11-19) these Dockerfiles have been used with Elasticsea
 
 * [Pre-Requisites](#prereqs)
 * [Building Docker images](#docker)
-* [Deploying on Kubernetes](#kubernetes)
+* [Deployment using Kubernetes](#kubernetes)
 * [Using OpenShift](#openshift)
 
 
@@ -59,9 +59,9 @@ The changing of those environment variables and a few Docker specific settings i
 
 <a id="kubernetes">
 
-## Deploying on Kubernetes
+## Deployment using Kubernetes
 
-On to Kubernetes..
+ And with Kubernetes..
 
 
 <a id="openshift">
