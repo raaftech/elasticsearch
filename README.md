@@ -61,8 +61,28 @@ The changing of those environment variables and a few Docker specific settings i
 
 ## Deployment using Kubernetes
 
- And with Kubernetes..
+in the [kubernetes](/kubernetes) subdirectory you'll find a selection of yaml files that set up various resources within a Kubernetes environment. In this case, there are four types of resources:
 
+ * route: An HTTP endpoint that exposes the service for the outside world to consume;
+ * service: A port definition that defines which ports should be open amongst pods;
+ * statefulset: A set of pods that have identity and state associated with them;
+ * deployment: A set of pods that have no persistent identity and usually no state;
+
+Essentially, the resources in a Kubernetes environment represent the things you care about when configuring a service on a system: how is the service accessed externally (routes), what ports do the service(s) use when talking to each other (services), which systems have data and identity that should be consistent across multiple lifecycles/restarts (statefulset) and which systems are simply interchangable workers without state or identity I care about (deployments).
+
+The yaml files in the kubernetes directory set up the routes and services and parameterize the Docker image to run in a specific way for each role of an Elasticsearch node in the cluster. If you read the yaml files, you'll see them setting various environment variables in a certain way: this configures the Docker image to assume a certain set of elasticsearch responsibilities.
+
+When you have your Kubernetes environment set-up and available for interaction with the `kubectl` command, `cd` into the kubernetes subdirectory, take a look at the default sizings in the statefulset and deployment files (In particular, look at the size of the storage claims, the number of cpu cores and the amount of memory assigned) and create your cluster as follows:
+
+ * `kubectl create -f service-es-transport.yaml`
+ * `kubectl create -f service-es-http.yaml`
+ * `kubectl create -f route-es-http.yaml`
+ * `kubectl create -f statefulset-es-master.yaml`
+ * `kubectl create -f statefulset-es-data.yaml`
+ * `kubectl create -f deployment-es-ingest.yaml`
+ * `kubectl create -f deployment-es-client.yaml`
+
+Note that the defaults currently defined in the yaml files are sized for a medium scale real-world deployment; That means about 60Gib of RAM and about 12 cores of CPU available in your cluster. If you're just playing around, feel free to lower these to whatever you think you can get away with. Bear in mind that as a general rule, you need to assign double the amount of ram to a pod compared to the amount of ram you assign to the JVM using the `-Xms` and `-Xmx` parameters.
 
 <a id="openshift">
 
