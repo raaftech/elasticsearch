@@ -83,20 +83,22 @@ When you have your Kubernetes environment set-up and available for interaction w
  * `kubectl create -f deployment-es-ingest.yaml`
  * `kubectl create -f deployment-es-client.yaml`
 
-Note that the defaults currently defined in the yaml files are sized for a medium scale real-world deployment; That means about 60Gib of RAM and about 12 cores of CPU available in your cluster. If you're just playing around, feel free to lower these to whatever you think you can get away with. Bear in mind that as a general rule, you need to assign double the amount of ram to a pod compared to the amount of ram you assign to the JVM using the `-Xms` and `-Xmx` parameters.
+Note that the defaults currently defined in the yaml files are sized for a medium scale real-world deployment; That means about 60Gib of RAM and about 12 cores of CPU available in your cluster. If you're just playing around, feel free to lower these to whatever you think you can get away with. Bear in mind that as a general rule, you need to assign double the amount of ram to a pod compared to the amount of ram you assign to the JVM using the `-Xms` and `-Xmx` parameters. Finally, keep in mind that your persistent storage classes in your Kubernetes might be named differently than the ones mentioned in the yaml files. To check names that would work in your cluster, issue a `kubectl get sc` command which will show the available storage classes to you.
 
 <a id="openshift">
 
 ## Using OpenShift
 
-Notes about using OpenShift.
+OpenShift v3 and later are based on Kubernetes. OpenShift adds a ton of nice features related to image building and versioning, authentication and isolation and definitely worth to check out. You can read more about OpenShift on the [okd.io](https://okd.io/) site.
+
+OpenShift tries to keep its Kubernetes related parts as compatible as feasibly possible and so you can run this cluster setup on your OpenShift environment by issuing an `oc login` and simply replacing the `kubectl` command above with `oc`.
 
 
 <a id="envargs">
 
 ## Environment Variables and Arguments
 
-Explain context.
+Explain context, todo: need to explain the defaults and optional values below.
 
 
 ### ARG PROXY_URL
