@@ -15,6 +15,7 @@ As of this writing (2018-11-19) these Dockerfiles have been used with Elasticsea
 * [Building Docker images](#docker)
 * [Deployment using Kubernetes](#kubernetes)
 * [Using OpenShift](#openshift)
+* [Environment Variables and Arguments](#envargs)
 
 
 <a id="prereqs">
@@ -70,7 +71,7 @@ in the [kubernetes](/kubernetes) subdirectory you'll find a selection of yaml fi
 
 Essentially, the resources in a Kubernetes environment represent the things you care about when configuring a service on a system: how is the service accessed externally (routes), what ports do the service(s) use when talking to each other (services), which systems have data and identity that should be consistent across multiple lifecycles/restarts (statefulset) and which systems are simply interchangable workers without state or identity I care about (deployments).
 
-The yaml files in the kubernetes directory set up the routes and services and parameterize the Docker image to run in a specific way for each role of an Elasticsearch node in the cluster. If you read the yaml files, you'll see them setting various environment variables in a certain way: this configures the Docker image to assume a certain set of elasticsearch responsibilities.
+The yaml files in the kubernetes directory set up the routes and services and parameterize the Docker image to run in a specific way for each role of an Elasticsearch node in the cluster. If you read the yaml files, you'll see them setting various environment variables in a certain way: this configures the Docker image to assume a certain set of Elasticsearch responsibilities.
 
 When you have your Kubernetes environment set-up and available for interaction with the `kubectl` command, `cd` into the kubernetes subdirectory, take a look at the default sizings in the statefulset and deployment files (In particular, look at the size of the storage claims, the number of cpu cores and the amount of memory assigned) and create your cluster as follows:
 
@@ -89,3 +90,132 @@ Note that the defaults currently defined in the yaml files are sized for a mediu
 ## Using OpenShift
 
 Notes about using OpenShift.
+
+
+<a id="envargs">
+
+## Environment Variables and Arguments
+
+Explain context.
+
+
+### ARG PROXY_URL
+
+Default: none
+
+
+### NO_PROXY
+
+Default: none
+
+
+### ENV HOME
+
+Default: "/elasticsearch".
+
+
+### ENV PATH
+
+Default: "/elasticsearch/bin:$PATH".
+
+
+### ES_ALLOW_MMAPFS
+
+Default: "true"
+
+
+### ES_JAVA_OPTS
+
+Default: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
+
+
+### ES_ARCHIVE_BASEURL
+
+Default: "https://artifacts.elastic.co/downloads/elasticsearch"
+Could also be: "https://snapshots.elastic.co/downloads/elasticsearch"
+
+
+### ES_ARCHIVE_KEYID
+
+Default: "46095ACC8548582C1A2699A9D27D666CD88E42B4"
+
+
+### ES_CLUSTER_NAME
+
+Default: "elasticsearch-default"
+
+
+### ES_DISCOVERY_SERVICE
+
+Default: none
+
+
+### ES_HTTP_CORS_ALLOW_ORIGIN
+
+Default: "*"
+
+
+### ES_HTTP_CORS_ENABLE
+
+Default: "true"
+
+
+### ES_INDEX_STORE_TYPE
+
+Default: "fs"
+
+
+### ES_MAX_LOCAL_STORAGE_NODES
+
+Default: "1"
+
+
+### ES_MEMORY_LOCK
+
+Default: "false"
+
+
+### ES_NETWORK_HOST
+
+Default: "_site_"
+
+
+### ES_NODE_DATA
+
+Default: "true"
+
+
+### ES_NODE_INGEST
+
+Default: "true"
+
+
+### ES_NODE_MASTER
+
+Default: "true"
+
+
+### ES_NUMBER_OF_MASTERS
+
+Default: "1"
+
+
+### ES_REPO_LOCATIONS
+
+Default: none
+
+
+### ES_SHARD_ALLOCATION_AWARENESS
+
+Default: none
+
+
+### ES_SHARD_ALLOCATION_AWARENESS_ATTR
+
+Default: none
+
+
+### ES_VERSION
+
+Default: "6.5.0"
+
