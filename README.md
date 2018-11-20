@@ -91,7 +91,7 @@ Note that the defaults currently defined in the yaml files are sized for a mediu
 
 OpenShift v3 and later are based on Kubernetes. OpenShift adds a ton of nice features related to image building and versioning, authentication and isolation and definitely worth to check out. You can read more about OpenShift on the [okd.io](https://okd.io/) site.
 
-OpenShift tries to keep its Kubernetes related parts as compatible as feasibly possible and so you can run this cluster setup on your OpenShift environment by issuing an `oc login` and simply replacing the `kubectl` command above with `oc`.
+OpenShift tries to keep its Kubernetes related parts as compatible as feasibly possible and so you can run this cluster setup on your OpenShift environment by issuing an `oc login` and simply replacing the `kubectl` part of the commands above with `oc`, for examle: `oc create -f service-es-transport.yaml`, etc.
 
 
 <a id="envargs">
