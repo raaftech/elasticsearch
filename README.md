@@ -115,111 +115,115 @@ Allows one to explicitly specify a comma-separated list of IP addresses and (par
 
 ### ENV HOME
 
-Default: "/elasticsearch".
+Default: `/elasticsearch`
+
+The home directory of the Elasticsearch installation. Don't change this, will definitely give unexpected results if changed.
 
 
 ### ENV PATH
 
-Default: "/elasticsearch/bin:$PATH".
+Default: `/elasticsearch/bin:$PATH`
+
+The default path for the image, prefixed with the bin directory of the Elasticsearch installation. If you change this, be sure to keep the `/elasticsearch/bin` directory as a first entry.
 
 
 ### ENV ES_ALLOW_MMAPFS
 
-Default: "true"
+Default: `true`
 
 
 ### ENV ES_JAVA_OPTS
 
-Default: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
+Default: `-Xms1g -Xmx1g -XX:ParallelGCThreads=1`
 
 
 ### ENV ES_ARCHIVE_BASEURL
 
-Default: "https://artifacts.elastic.co/downloads/elasticsearch"
-Could also be: "https://snapshots.elastic.co/downloads/elasticsearch"
+Default: `https://artifacts.elastic.co/downloads/elasticsearch`
+Could also be: `https://snapshots.elastic.co/downloads/elasticsearch`
 
 
 ### ENV ES_ARCHIVE_KEYID
 
-Default: "46095ACC8548582C1A2699A9D27D666CD88E42B4"
+Default: `46095ACC8548582C1A2699A9D27D666CD88E42B4`
 
 
 ### ENV ES_CLUSTER_NAME
 
-Default: "elasticsearch-default"
+Default: `elasticsearch-default`
 
 
 ### ENV ES_DISCOVERY_SERVICE
 
-Default: none
+Default: `none`
 
 
 ### ENV ES_HTTP_CORS_ALLOW_ORIGIN
 
-Default: "*"
+Default: `*`
 
 
 ### ENV ES_HTTP_CORS_ENABLE
 
-Default: "true"
+Default: `true`
 
 
 ### ENV ES_INDEX_STORE_TYPE
 
-Default: "fs"
+Default: `fs`
 
 
 ### ENV ES_MAX_LOCAL_STORAGE_NODES
 
-Default: "1"
+Default: `1`
 
 
 ### ENV ES_MEMORY_LOCK
 
-Default: "false"
+Default: `false`
 
 
 ### ENV ES_NETWORK_HOST
 
-Default: "_site_"
+Default: `_site_`
 
 
 ### ENV ES_NODE_DATA
 
-Default: "true"
+Default: `true`
 
 
 ### ENV ES_NODE_INGEST
 
-Default: "true"
+Default: `true`
 
 
 ### ENV ES_NODE_MASTER
 
-Default: "true"
+Default: `true`
 
 
 ### ENV ES_NUMBER_OF_MASTERS
 
-Default: "1"
+Default: `1`
 
 
 ### ENV ES_REPO_LOCATIONS
 
-Default: none
+Default: `none`
 
 
 ### ENV ES_SHARD_ALLOCATION_AWARENESS
 
-Default: none
+Default: `none`
 
 
 ### ENV ES_SHARD_ALLOCATION_AWARENESS_ATTR
 
-Default: none
+Default: `none`
 
 
 ### ENV ES_VERSION
 
-Default: "6.5.0"
+Default: `6.5.0`
 
