@@ -98,18 +98,20 @@ OpenShift tries to keep its Kubernetes related parts as compatible as feasibly p
 
 ## Environment Variables and Arguments
 
-Explain context, todo: need to explain the defaults and optional values below.
+As mentioned before, the Docker image can be parameterized at build and runtime with various arguments and environment variables. Arguments (the `ARG` keyword in a Dockerfile) are things which exist at build time (i.e, during `docker build`). Environment variables exist during build and runtime (i.e, also during `docker run`).
 
 
 ### ARG PROXY_URL
 
-Default: none
+Default: `none`
 
+Specifies a proxy url that can be used during build time to make curl use a proxy when fetching the neccessary artifacts during a `setup.sh` run. Example value: `http://proxy.example.com:8080`.
 
-### NO_PROXY
+### ARG NO_PROXY
 
-Default: none
+Default: `none`
 
+Allows one to explicitly specify a comma-separated list of IP addresses and (partial) hostnames which should not be accessed using a proxy. You can partially specify a hostname as follows: `.example.com`, which would match all hosts ending in `.example.com`. Example value: `localhost,127.0.0.1,.example.com`.
 
 ### ENV HOME
 
@@ -121,103 +123,103 @@ Default: "/elasticsearch".
 Default: "/elasticsearch/bin:$PATH".
 
 
-### ES_ALLOW_MMAPFS
+### ENV ES_ALLOW_MMAPFS
 
 Default: "true"
 
 
-### ES_JAVA_OPTS
+### ENV ES_JAVA_OPTS
 
 Default: "-Xms1g -Xmx1g -XX:ParallelGCThreads=1"
 
 
-### ES_ARCHIVE_BASEURL
+### ENV ES_ARCHIVE_BASEURL
 
 Default: "https://artifacts.elastic.co/downloads/elasticsearch"
 Could also be: "https://snapshots.elastic.co/downloads/elasticsearch"
 
 
-### ES_ARCHIVE_KEYID
+### ENV ES_ARCHIVE_KEYID
 
 Default: "46095ACC8548582C1A2699A9D27D666CD88E42B4"
 
 
-### ES_CLUSTER_NAME
+### ENV ES_CLUSTER_NAME
 
 Default: "elasticsearch-default"
 
 
-### ES_DISCOVERY_SERVICE
+### ENV ES_DISCOVERY_SERVICE
 
 Default: none
 
 
-### ES_HTTP_CORS_ALLOW_ORIGIN
+### ENV ES_HTTP_CORS_ALLOW_ORIGIN
 
 Default: "*"
 
 
-### ES_HTTP_CORS_ENABLE
+### ENV ES_HTTP_CORS_ENABLE
 
 Default: "true"
 
 
-### ES_INDEX_STORE_TYPE
+### ENV ES_INDEX_STORE_TYPE
 
 Default: "fs"
 
 
-### ES_MAX_LOCAL_STORAGE_NODES
+### ENV ES_MAX_LOCAL_STORAGE_NODES
 
 Default: "1"
 
 
-### ES_MEMORY_LOCK
+### ENV ES_MEMORY_LOCK
 
 Default: "false"
 
 
-### ES_NETWORK_HOST
+### ENV ES_NETWORK_HOST
 
 Default: "_site_"
 
 
-### ES_NODE_DATA
+### ENV ES_NODE_DATA
 
 Default: "true"
 
 
-### ES_NODE_INGEST
+### ENV ES_NODE_INGEST
 
 Default: "true"
 
 
-### ES_NODE_MASTER
+### ENV ES_NODE_MASTER
 
 Default: "true"
 
 
-### ES_NUMBER_OF_MASTERS
+### ENV ES_NUMBER_OF_MASTERS
 
 Default: "1"
 
 
-### ES_REPO_LOCATIONS
+### ENV ES_REPO_LOCATIONS
 
 Default: none
 
 
-### ES_SHARD_ALLOCATION_AWARENESS
+### ENV ES_SHARD_ALLOCATION_AWARENESS
 
 Default: none
 
 
-### ES_SHARD_ALLOCATION_AWARENESS_ATTR
+### ENV ES_SHARD_ALLOCATION_AWARENESS_ATTR
 
 Default: none
 
 
-### ES_VERSION
+### ENV ES_VERSION
 
 Default: "6.5.0"
 
