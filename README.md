@@ -43,7 +43,7 @@ Alright, without further ado, let's get that standalone Docker image up + runnin
 
  * `docker build -t someorg/elasticsearch .`
  * `docker run -d -p 9200:9200 -p 9300:9300 --rm --name es someorg/elasticsearch`
- * `docker logs -f es` (<ctrl-c> when you've seen enough)
+ * `docker logs -f es` (`<ctrl-c>` when you've seen enough)
  * `curl http://localhost:9200` (returns the main info json)
 
 And to clean up afterwards:
