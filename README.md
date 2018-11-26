@@ -131,6 +131,12 @@ The default path for the image, prefixed with the bin directory of the Elasticse
 
 Default: `true`
 
+Since Elasticsearch 6.5.0, does not work on versions prior to 6.5.0. Allows or disallows `mmapfs` as an index backend. Can be set to `false` when you don't have root permissions on the underlying platform to set `vm.max_map_count` to be at least `262144`. Be sure to also set `ES_INDEX_STORE_TYPE` to `niofs` or `simplefs`.
+
+When Elasticsearch boots up and detects it is not just running on localhost, it will invoke the bootchecks mechanism to make sure various things are sanely configured. One of those checks is for the value of `vm.max_map_count` to be at least `262144`. Prior to Elasticsearch version 6.5.0, there was no way to avoid that bootcheck, not even when you'd set `index.store.type` to anything other than `mmapfs`; the reason for that is that `index.store.type` simply defines a default and can be overridden during index creation.
+
+The value of `vm.max_map_count` is only relevant when `index.store.type` is `mmapfs` and when `node.store.allow_mmapfs` is `true` which is the resulting default on at least Linux and macOS when `index.store.type` is set to `fs` or `mmapfs`.
+
 
 ### ENV ES_JAVA_OPTS
 
