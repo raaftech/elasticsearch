@@ -192,7 +192,7 @@ Also check out Elastic Co's page documenting the [HTTP Module](https://www.elast
 
 Default: `true`
 
-
+Enable or disable cross-origin resource sharing, i.e. whether a client on another origin can execute requests against Elasticsearch. For more details, see the rather excellent Wikipedia page on [Cross-Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 ### ENV ES_INDEX_STORE_TYPE
 
