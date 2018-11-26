@@ -64,20 +64,30 @@ if [ ! -z "${ES_PLUGINS_INSTALL}" ]; then
     IFS="${OLDIFS}"
 fi
 
-if [ ! -z "${ES_SHARD_ALLOCATION_AWARENESS_ATTR}" ]; then
-    # This will map to a file like  /etc/hostname => /dockerhostname
-    # so reading that file will get the container hostname.
-    if [ -f "${ES_SHARD_ALLOCATION_AWARENESS_ATTR}" ]; then
-        ES_SHARD_ATTR="$(cat "${SHARD_ALLOCATION_AWARENESS_ATTR}")"
-    else
-        ES_SHARD_ATTR="${SHARD_ALLOCATION_AWARENESS_ATTR}"
+if [ "${ES_SHARD_ALLOCATION_AWARENESS_ENABLED}" == "true" ]; then
+    # This could map to a file like  /etc/hostname => /dockerhostname. If it's
+    # a file, replace the current path specification with the last non-empty,
+    # not-beginning-with-a-comment-character line of that file, filter out any
+    # spaces and limit the string length to the first 16 characters.
+    if [ -f "${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" ]; then
+        ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="$(
+            cat "${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" |
+            sed '/^[[:space:]]*$/d' |
+            sed '/^#/ d' |
+            tail -n1 |
+            sed 's/[[:space:]]//g' |
+            cut -c1-16
+        )"
     fi
 
-    ES_NODE_NAME="${ES_SHARD_ATTR}-${ES_NODE_NAME}"
-    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS}: ${ES_SHARD_ATTR}" >> $BASE/config/elasticsearch.yml
+    # Rewrite the node name by prefixing it with the attribute value.
+    ES_NODE_NAME="${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}-${ES_NODE_NAME}"
+
+    # Add the entry to the configuration file.
+    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" >> $BASE/config/elasticsearch.yml
 
     if [ "$ES_NODE_MASTER" == "true" ]; then
-        echo "cluster.routing.allocation.awareness.attributes: ${ES_SHARD_ALLOCATION_AWARENESS}" >> "${BASE}"/config/elasticsearch.yml
+        echo "cluster.routing.allocation.awareness.attributes: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}" >> "${BASE}"/config/elasticsearch.yml
     fi
 fi
 

@@ -273,18 +273,43 @@ Be sure to read the documentation on [Avoiding Split Brain](https://www.elastic.
 
 Default: `none`
 
+The shared file system repository (`"type": "fs"`) uses the shared file system to store snapshots. In order to register the shared file system repository it is necessary to mount the same shared filesystem to the same location on all master and data nodes. This location (or one of its parent directories) must be registered in the path.repo setting on all master and data nodes.
 
-### ENV ES_SHARD_ALLOCATION_AWARENESS
+Setting `ES_REPO_LOCATIONS` to `/mnt/backups` would result in `path.repo` being set to `/mnt/backups` in the Elasticsearch configuration.
+
+See the documentation related to the [Shared File System Repository](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-snapshots.html#_shared_file_system_repository) in the Elasticsearch reference guide for more information.
+
+
+### ENV ES_SHARD_ALLOCATION_AWARENESS_ENABLED
+
+Default: `false`
+
+When running nodes on multiple VMs on the same physical server, on multiple racks, or across multiple zones or domains, it is more likely that two nodes on the same physical server, in the same rack, or in the same zone or domain will crash at the same time, rather than two unrelated nodes crashing simultaneously.
+
+If Elasticsearch is aware of the physical configuration of your hardware, it can ensure that the primary shard and its replica shards are spread across different physical servers, racks, or zones, to minimise the risk of losing all shard copies at the same time.
+
+See the reference documentation on [Shard Allocation Awareness](https://www.elastic.co/guide/en/elasticsearch/reference/current/allocation-awareness.html) in the Elasticsearch reference guide for more information about this.
+
+
+### ENV ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY
 
 Default: `none`
 
+Specifies the attribute key name. Ends up as `node.attr.<some-key-name>` in the Elasticsearch configuration.
 
-### ENV ES_SHARD_ALLOCATION_AWARENESS_ATTR
+
+### ENV ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE
 
 Default: `none`
+
+Specifies the attribute value for the attribute key name specified with `ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY`. Ends up as the value of `node.attr.<some-key-name>`.
+
+When this value is a path to a file within the container, the last line of that file will be the value instead.
 
 
 ### ENV ES_VERSION
 
 Default: `6.5.0`
+
+Specifies the Elasticsearch version. Only has effect at `docker build` time. You can specify a stable version like `6.5.0` or `6.4.3`. Snapshot versions can be specified as `6.6.0-SNAPSHOT`. Note that snapshots are not on the regular downloadable artifacts server. See `ES_ARCHIVE_BASEURL` for details about how to change where the artifacts are fetched from.
 

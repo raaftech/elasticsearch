@@ -32,8 +32,9 @@ ENV HOME="/elasticsearch" \
     ES_NODE_MASTER="true" \
     ES_NUMBER_OF_MASTERS="1" \
     ES_REPO_LOCATIONS="" \
-    ES_SHARD_ALLOCATION_AWARENESS="" \
-    ES_SHARD_ALLOCATION_AWARENESS_ATTR="" \
+    ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
+    ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
+    ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
     ES_VERSION="6.5.0"
 
 # Separate environment block due to usage of previously set environment variables.
