@@ -158,25 +158,40 @@ Controls where `setup.sh` retrieves its installation payloads from. When you spe
 
 Default: `46095ACC8548582C1A2699A9D27D666CD88E42B4`
 
+The public key id which Elastic Co uses to sign their released artifacts. The `setup.sh` script uses this id and the downloaded hash file to retrieve the associated public key from a PGP keyserver and afterwards determine if the downloaded artifact is valid.
+
 
 ### ENV ES_CLUSTER_NAME
 
 Default: `elasticsearch-default`
+
+The name of your Elasticsearch instance.
 
 
 ### ENV ES_DISCOVERY_SERVICE
 
 Default: `none`
 
+This effectively sets `discovery.zen.ping.unicast.hosts` in the Elasticsearch configuration file. [Zen Discovery](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-zen.html) is the default built-in discovery module for cluster nodes in Elasticsearch. The Kubernetes configuration files set this value to `es-transport` which is the name of the Kubernetes Service that defines an inter-node transport port 9300 for nodes to talk to each other.
+
+Note: the documentation from Elastic Co tells us that this value can be a list of hosts. I surmise that Kubernetes actually creates a DNS entry for a service name and that would resolve to multiple hosts (DNS round-robin style), but unsure of this (Edit: The Kubernetes Documentation on Services seems to indeed indicate that that's the case).
+
 
 ### ENV ES_HTTP_CORS_ALLOW_ORIGIN
 
 Default: `*`
 
+Which origins to allow (see `ES_HTTP_CORS_ENABLE` below for more details on cross-origin resource sharing). If you prepend and append a `/` to the value, this will be treated as a regular expression, allowing you to support HTTP and HTTPs. for example using `/https?:\/\/localhost(:[0-9]+)?/` would return the request header appropriately in both cases.
+
+The default in our case: `*` is a valid value but is considered a security risk as your Elasticsearch instance is open to cross origin requests from anywhere and it is strongly suggested you change this.
+
+Also check out Elastic Co's page documenting the [HTTP Module](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-http.html#modules-http) for more details.
+
 
 ### ENV ES_HTTP_CORS_ENABLE
 
 Default: `true`
+
 
 
 ### ENV ES_INDEX_STORE_TYPE
