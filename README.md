@@ -142,6 +142,10 @@ The value of `vm.max_map_count` is only relevant when `index.store.type` is `mma
 
 Default: `-Xms1g -Xmx1g -XX:ParallelGCThreads=1`
 
+Can be used to set a selection of JVM parameters. The default as shown above sets the minimum and maximum heap sizes to an equal amount, disabling the dynamic growth and shrink functions within the JVM which can incur a performance penalty and sets the ParallelGCThreads option to 1, guaranteeing at most 1 concurrent garbage collection threads running at any given moment. This last setting is specific to the CMS (ConcurrentMarkSweep) garbage collector which is configured in the `jvm.options` configuration file.
+
+Note that these settings can also be set in the jvm.options file, but setting them here allows you to override them on a per-instance basis.
+
 
 ### ENV ES_ARCHIVE_BASEURL
 
