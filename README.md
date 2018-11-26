@@ -194,19 +194,36 @@ Default: `true`
 
 Enable or disable cross-origin resource sharing, i.e. whether a client on another origin can execute requests against Elasticsearch. For more details, see the rather excellent Wikipedia page on [Cross-Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
+
 ### ENV ES_INDEX_STORE_TYPE
 
 Default: `fs`
+
+The default leaves the selection of an index store type implementation to Elasticsearch. On Linux and macOS, that would be `mmapfs` and on Windows it's `simplefs`.
+
+Note that this value simply specifies the default index store type and does not actually restrict the specification of index store types at index creation time. Also see `ES_ALLOW_MMAPFS`.
+
+See the reference documentation page on the [Store Module](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules-store.html) for more detailed information about the possible values here.
 
 
 ### ENV ES_MAX_LOCAL_STORAGE_NODES
 
 Default: `1`
 
+This setting limits how many Elasticsearch processes can interact with a local data path and should in almost all cases be set to `1`. If you're running multiple Elasticsearch processes locally, and you want them to all access the same data path, you can increase this number. Should usually not be higher than `1` in production. Check the [Node Data Path Settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#_node_data_path_settings) in the Elasticsearch reference guide for more details.
+
 
 ### ENV ES_MEMORY_LOCK
 
 Default: `false`
+
+From the Elasticsearch reference guide: When the JVM does a major garbage collection it touches every page of the heap. If any of those pages are swapped out to disk they will have to be swapped back in to memory. That causes lots of disk thrashing that Elasticsearch would much rather use to service requests.
+
+There are several ways to configure a system to disallow swapping. One way is by requesting the JVM to lock the heap in memory through `mlockall` (Unix) or `virtuallock` (Windows). This is done via the Elasticsearch setting `bootstrap.memory_lock`.
+
+However, there are cases where this setting can be passed to Elasticsearch but Elasticsearch is not able to lock the heap (e.g., if the elasticsearch user does not have `memlock unlimited`). The memory lock check verifies that if the bootstrap.memory_lock setting is enabled and that the JVM was successfully able to lock the heap.
+
+The default in our case is `false` which disables the check. If you know you have `memlock unlimited` you can set this value to `true`
 
 
 ### ENV ES_NETWORK_HOST
