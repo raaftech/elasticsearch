@@ -150,7 +150,8 @@ Note that these settings can also be set in the jvm.options file, but setting th
 ### ENV ES_ARCHIVE_BASEURL
 
 Default: `https://artifacts.elastic.co/downloads/elasticsearch`
-Could also be: `https://snapshots.elastic.co/downloads/elasticsearch`
+
+Controls where `setup.sh` retrieves its installation payloads from. When you specify a SNAPSHOT version of Elasticsearch in `ES_VERSION`, you need to set this to `https://snapshots.elastic.co/downloads/elasticsearch`. For regular stable releases, the default is fine.
 
 
 ### ENV ES_ARCHIVE_KEYID
