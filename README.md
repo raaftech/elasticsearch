@@ -230,6 +230,10 @@ The default in our case is `false` which disables the check. If you know you hav
 
 Default: `_site_`
 
+Elasticsearch will bind to this hostname or IP address and publish (advertise) this host to other nodes in the cluster. Accepts an IP address, hostname, a special value, or an array of any combination of these.
+
+Special values are: `_[networkInterface]_` (addresses of a network interface, for example `_en0_`), `_local_` (any loopback addresses on the system, for example `127.0.0.1`), `_site_` (any site-local addresses on the system, for example `192.168.0.1`, `172.16.0.1` or `10.0.0.1`) and `_global_` (any globally-scoped addresses on the system, for example `8.8.8.8`).
+
 
 ### ENV ES_NODE_DATA
 
