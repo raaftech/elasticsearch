@@ -239,20 +239,34 @@ Special values are: `_[networkInterface]_` (addresses of a network interface, fo
 
 Default: `true`
 
+Will this Elasticsearch instance fulfill a [Data Node](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html) role?
+
 
 ### ENV ES_NODE_INGEST
 
 Default: `true`
+
+Will this Elasticsearch instance fulfill an [Ingest Node](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html) role?
 
 
 ### ENV ES_NODE_MASTER
 
 Default: `true`
 
+Will this Elasticsearch instance fulfill a [Master Node](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html) role?
+
 
 ### ENV ES_NUMBER_OF_MASTERS
 
 Default: `1`
+
+Sets `discovery.zen.minimum_master_nodes`. This is the minimum number of master eligible nodes that need to join a newly elected master in order for an election to complete and for the elected node to accept its masterness.
+
+The same setting also controls the minimum number of active master eligible nodes that should be a part of any active cluster. If this requirement is not met the active master node will step down and a new master election will begin.
+
+This setting must be set to a quorum of your master eligible nodes ((*master_eligible_nodes/2)+1*). It is recommended to avoid having only two master **eligible** nodes, since a quorum of two is two. Therefore, a loss of either master eligible node will result in an inoperable cluster. In practice, three master eligible nodes and a minimum_master_nodes of two is a good option.
+
+Be sure to read the documentation on [Avoiding Split Brain](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#split-brain).
 
 
 ### ENV ES_REPO_LOCATIONS
