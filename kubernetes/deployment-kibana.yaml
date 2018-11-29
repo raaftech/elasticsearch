@@ -16,12 +16,10 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana-oss:6.3.2
+        image: docker.elastic.co/kibana/kibana:6.5.1
         env:
         - name: CLUSTER_NAME
-          value: myesdb
-        - name: SERVER_BASEPATH
-          value: /api/v1/namespaces/default/services/kibana:http/proxy
+          value: elasticsearch-cluster
         resources:
           limits:
             cpu: 1000m

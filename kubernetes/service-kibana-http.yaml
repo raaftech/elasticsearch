@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: kibana
+  name: kibana-http
   labels:
     component: kibana
 spec:
@@ -9,5 +9,5 @@ spec:
     component: kibana
   ports:
   - name: http
-    port: 80
+    port: 5601
     targetPort: http
