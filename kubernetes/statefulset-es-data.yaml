@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: es-data
-        image: raaftech/elasticsearch:6.5.1
+        image: raaftech/elasticsearch:6.5.4
         imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS

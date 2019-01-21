@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana:6.5.1
+        image: docker.elastic.co/kibana/kibana:6.5.4
         env:
         - name: CLUSTER_NAME
           value: elasticsearch-cluster
