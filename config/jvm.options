@@ -2,9 +2,6 @@
 -XX:+UseG1GC
 -XX:+UseStringDeduplication
 -XX:+UseContainerSupport
--XX:InitialRAMPercentage=80.0
--XX:MaxRAMPercentage=80.0
--XX:ParallelGCThreads=1
 
 # Disable calls to System#gc.
 -XX:+DisableExplicitGC
