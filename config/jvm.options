@@ -1,16 +1,27 @@
 ## GC configuration.
--XX:+UseConcMarkSweepGC
--XX:CMSInitiatingOccupancyFraction=75
--XX:+UseCMSInitiatingOccupancyOnly
+-XX:+UseG1GC
+-XX:+UseStringDeduplication
+-XX:+UseContainerSupport
+-XX:InitialRAMPercentage=80.0
+-XX:MaxRAMPercentage=80.0
+-XX:ParallelGCThreads=1
 
 # Disable calls to System#gc.
 -XX:+DisableExplicitGC
 
-# Pre-touch memory pages used by the JVM during initialization.
--XX:+AlwaysPreTouch
-
-# Explicitly set the stack size.
--Xss1m
+# Pre-touch memory pages used by the JVM during initialization. Without the
+# -XX:+AlwaysPreTouch option the JVM max heap is allocated in virtual memory,
+# not physical memory: it is recorded in an internal data structure to avoid
+# it being used by any other process. Not even a single page will be allocated
+# in physical memory until it's actually accessed. When the JVM needs memory,
+# the operating system will allocate pages as needed.
+# With the -XX:+AlwaysPreTouch option the JVM touches every single byte of the
+# max heap size with a '0', resulting in the memory being allocated in the
+# physical memory in addition to being reserved in the internal data structure
+# (virtual memory). Pretouching is single threaded, so it is expected behavior
+# that it causes JVM startup to be delayed. Trade off is that it will reduce
+# page access time later, as the pages will already be loaded into memory.
+# -XX:+AlwaysPreTouch
 
 # Set to headless, just in case.
 -Djava.awt.headless=true

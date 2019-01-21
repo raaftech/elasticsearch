@@ -11,11 +11,12 @@ USER 0
 ARG PROXY_URL=""
 ARG NO_PROXY=""
 
-# Environment variables for Elasticsearch.
+# Environment variables for Elasticsearch (Note that ES_JAVA_OPTS complements
+# options specified in the config/jvm.options file).
 ENV HOME="/elasticsearch" \
     PATH="/elasticsearch/bin:$PATH" \
     ES_ALLOW_MMAPFS="true" \
-    ES_JAVA_OPTS="-XX:+UnlockDiagnosticVMOptions -XX:+UseContainerSupport -XX:InitialRAMPercentage=80.0 -XX:MinRAMPercentage=20.0 -XX:MaxRAMPercentage=80.0" \
+    ES_JAVA_OPTS="" \
     ES_ARCHIVE_BASEURL="https://artifacts.elastic.co/downloads/elasticsearch" \
     #ES_ARCHIVE_BASEURL="https://snapshots.elastic.co/downloads/elasticsearch" \
     ES_ARCHIVE_KEYID="46095ACC8548582C1A2699A9D27D666CD88E42B4" \
