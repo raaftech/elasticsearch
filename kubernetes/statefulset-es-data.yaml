@@ -31,8 +31,6 @@ spec:
           value: "es-transport"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
-        - name: ES_JAVA_OPTS
-          value: "-Xms4g -Xmx4g -XX:ParallelGCThreads=1"
         - name: ES_NODE_DATA
           value: "true"
         - name: ES_NODE_INGEST

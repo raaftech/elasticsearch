@@ -26,8 +26,6 @@ spec:
           value: "es-transport"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
-        - name: ES_JAVA_OPTS
-          value: "-Xms2g -Xmx2g -XX:ParallelGCThreads=1"
         - name: ES_NETWORK_HOST
           value: "_site_,_lo_"
         - name: ES_NODE_DATA
