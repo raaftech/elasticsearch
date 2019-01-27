@@ -7,14 +7,14 @@ echo "* Mount output: "
 mount
 echo ""
 
-echo "Listing output:"
+echo "* Listing output:"
 ls -lR "$HOME"
 echo ""
 
 sleep 60
 
 # (Try to) Make sure that we own our data and pause.
-echo "Attempting to take ownership:"
+echo "* Attempting to take ownership:"
 chown -R elasticsearch:elasticsearch "$HOME"
 echo ""
 
