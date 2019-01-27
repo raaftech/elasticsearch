@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Starting Elasticsearch ${ES_VERSION}"
+echo "Starting Elasticsearch $ES_VERSION"
 
 # Handle discovery service setting. When unset, take out the
 # ping.unicast.hosts setting. Usually unset when running
@@ -37,7 +37,7 @@ if (( $ES_VERSION_CONCAT < 650 )); then
 fi
 
 # Allow for memlock if enabled.
-if [ "${ES_MEMORY_LOCK}" == "true" ]; then
+if [ "$ES_MEMORY_LOCK" == "true" ]; then
     ulimit -l unlimited
 fi
 
@@ -48,28 +48,28 @@ export ES_TMPDIR="$(mktemp -d -t elasticsearch.XXXXXXXX)"
 # Prevent "Text file busy" errors.
 sync
 
-if [ ! -z "${ES_PLUGINS_INSTALL}" ]; then
-    OLDIFS="${IFS}"
+if [ ! -z "$ES_PLUGINS_INSTALL" ]; then
+    OLDIFS="$IFS"
     IFS=","
-    for plugin in ${ES_PLUGINS_INSTALL}; do
-        if ! "${BASE}"/bin/elasticsearch-plugin list | grep -qs ${plugin}; then
-            until "${BASE}"/bin/elasticsearch-plugin install --batch ${plugin}; do
-                echo "Failed to install ${plugin}, retrying in 3s"
+    for plugin in $ES_PLUGINS_INSTALL; do
+        if ! "$HOME/bin/elasticsearch-plugin" list | grep -qs $plugin; then
+            until "$HOME/bin/elasticsearch-plugin" install --batch $plugin; do
+                echo "Failed to install $plugin, retrying in 3s"
                 sleep 3
             done
         fi
     done
-    IFS="${OLDIFS}"
+    IFS="$OLDIFS"
 fi
 
-if [ "${ES_SHARD_ALLOCATION_AWARENESS_ENABLED}" == "true" ]; then
+if [ "$ES_SHARD_ALLOCATION_AWARENESS_ENABLED" == "true" ]; then
     # This could map to a file like  /etc/hostname => /dockerhostname. If it's
     # a file, replace the current path specification with the last non-empty,
     # not-beginning-with-a-comment-character line of that file, filter out any
     # spaces and limit the string length to the first 16 characters.
-    if [ -f "${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" ]; then
+    if [ -f "$ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE" ]; then
         ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="$(
-            cat "${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" |
+            cat "$ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE" |
             sed '/^[[:space:]]*$/d' |
             sed '/^#/ d' |
             tail -n1 |
@@ -82,26 +82,26 @@ if [ "${ES_SHARD_ALLOCATION_AWARENESS_ENABLED}" == "true" ]; then
     ES_NODE_NAME="${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}-${ES_NODE_NAME}"
 
     # Add the entry to the configuration file.
-    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" >> $HOME/config/elasticsearch.yml
+    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" >> "$HOME/config/elasticsearch.yml"
 
     if [ "$ES_NODE_MASTER" == "true" ]; then
-        echo "cluster.routing.allocation.awareness.attributes: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}" >> "${BASE}"/config/elasticsearch.yml
+        echo "cluster.routing.allocation.awareness.attributes: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}" >> "$HOME/config/elasticsearch.yml"
     fi
 fi
 
 export ES_NODE_NAME
 
 # Remove x-pack-ml module.
-rm -rf /elasticsearch/modules/x-pack/x-pack-ml
-rm -rf /elasticsearch/modules/x-pack-ml
+rm -rf "$HOME/modules/x-pack/x-pack-ml"
+rm -rf "$HOME/modules/x-pack-ml"
 
 # Run!
-if [[ $(whoami) == "root" ]]; then
+if [[ "$(whoami)" == "root" ]]; then
     if [ ! -d "/data/data/nodes/0" ]; then
         echo "Changing ownership of /data folder"
-        chown -R elasticsearch:elasticsearch /data
+        chown -R elasticsearch:elasticsearch "$HOME/data"
     fi
-    exec su-exec elasticsearch $HOME/bin/elasticsearch $ES_EXTRA_ARGS
+    exec su-exec elasticsearch "$HOME/bin/elasticsearch" $ES_EXTRA_ARGS
 else
     # The container's first process is not running as 'root',
     # it does not have the rights to chown. However, we may
@@ -109,5 +109,5 @@ else
     # the volumes already have the right permissions. This is
     # the case for Kubernetes, for example, when 'runAsUser: 1000'
     # and 'fsGroup:100' are defined in the pod's security context.
-    "${BASE}"/bin/elasticsearch ${ES_EXTRA_ARGS}
+    "$HOME/bin/elasticsearch" $ES_EXTRA_ARGS
 fi
