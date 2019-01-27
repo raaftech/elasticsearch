@@ -2,25 +2,6 @@
 
 echo "Starting Elasticsearch ${ES_VERSION}"
 
-# List the directories recursively and pause.
-echo "* Mount output: "
-mount
-echo ""
-
-echo "* Listing output:"
-ls -lR "$HOME"
-echo ""
-
-sleep 60
-
-# (Try to) Make sure that we own our data and pause.
-echo "* Attempting to take ownership:"
-chown -R elasticsearch:elasticsearch "$HOME"
-echo ""
-
-sleep 60
-
-
 # Handle discovery service setting. When unset, take out the
 # ping.unicast.hosts setting. Usually unset when running
 # standalone in Docker directly but needed by Kubernetes.
