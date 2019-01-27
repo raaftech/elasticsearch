@@ -1,20 +1,25 @@
-apiVersion: apps/v1beta1
-kind: Deployment
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
-  name: es-client
+  name: es-combined
   labels:
     component: elasticsearch
 spec:
-  replicas: 3
+  selector:
+    matchLabels:
+      component: elasticsearch
+      role: combined
+  serviceName: es-transport
+  replicas: 1
   template:
     metadata:
       labels:
         component: elasticsearch
         http: enabled
-        role: client
+        role: combined
     spec:
       containers:
-      - name: es-client
+      - name: es-combined
         image: raaftech/elasticsearch:latest
         imagePullPolicy: Always
         env:
@@ -26,14 +31,14 @@ spec:
           value: "es-transport"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
-        - name: ES_NETWORK_HOST
-          value: "_site_,_lo_"
         - name: ES_NODE_DATA
-          value: "false"
+          value: "true"
         - name: ES_NODE_INGEST
-          value: "false"
+          value: "true"
         - name: ES_NODE_MASTER
-          value: "false"
+          value: "true"
+        - name: ES_NUMBER_OF_MASTERS
+          value: "1"
         - name: ES_NODE_NAME
           valueFrom:
             fieldRef:
@@ -49,13 +54,11 @@ spec:
         resources:
           requests:
             cpu: 0.25
-            memory: 2Gi
+            memory: 8Gi
           limits:
             cpu: 1
-            memory: 2Gi
+            memory: 8Gi
         ports:
-        - containerPort: 9200
-          name: http
         - containerPort: 9300
           name: transport
         livenessProbe:
@@ -63,16 +66,15 @@ spec:
             port: transport
           initialDelaySeconds: 20
           periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /_cluster/health
-            port: http
-          initialDelaySeconds: 20
-          timeoutSeconds: 5
         volumeMounts:
         - name: storage
           mountPath: /elasticsearch/data
-      volumes:
-          - emptyDir:
-              medium: ""
-            name: storage
+  volumeClaimTemplates:
+  - metadata:
+      name: storage
+    spec:
+      storageClassName: glusterfs-storage-block
+      accessModes: [ ReadWriteOnce ]
+      resources:
+        requests:
+          storage: 100Gi

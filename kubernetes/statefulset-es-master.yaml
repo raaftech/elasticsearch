@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: es-master
-        image: raaftech/elasticsearch:6.5.4
+        image: raaftech/elasticsearch:latest
         imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS
@@ -73,7 +73,7 @@ spec:
   - metadata:
       name: storage
     spec:
-      storageClassName: glusterfs-storage
+      storageClassName: glusterfs-storage-block
       accessModes: [ ReadWriteOnce ]
       resources:
         requests:

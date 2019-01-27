@@ -17,8 +17,8 @@ ENV HOME="/elasticsearch" \
     PATH="/elasticsearch/bin:$PATH" \
     ES_ALLOW_MMAPFS="true" \
     ES_JAVA_OPTS="-XX:InitialRAMPercentage=80.0 -XX:MaxRAMPercentage=80.0 -XX:ParallelGCThreads=1" \
-    ES_ARCHIVE_BASEURL="https://artifacts.elastic.co/downloads/elasticsearch" \
-    #ES_ARCHIVE_BASEURL="https://snapshots.elastic.co/downloads/elasticsearch" \
+    #ES_ARCHIVE_BASEURL="https://artifacts.elastic.co/downloads/elasticsearch" \
+    ES_ARCHIVE_BASEURL="https://snapshots.elastic.co/downloads/elasticsearch" \
     ES_ARCHIVE_KEYID="46095ACC8548582C1A2699A9D27D666CD88E42B4" \
     ES_CLUSTER_NAME="elasticsearch-default" \
     ES_DISCOVERY_SERVICE="" \
@@ -36,7 +36,8 @@ ENV HOME="/elasticsearch" \
     ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
-    ES_VERSION="6.5.4"
+    #ES_VERSION="6.5.4"
+    ES_VERSION="6.6.0-SNAPSHOT"
 
 # Separate environment block due to usage of previously set environment variables.
 ENV ES_ARCHIVE_TARBALL="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}.tar.gz" \
