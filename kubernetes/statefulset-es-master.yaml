@@ -18,6 +18,9 @@ spec:
         http: disabled
         role: master
     spec:
+      securityContext:
+        runAsUser: "185"
+        fsGroup: "185"
       containers:
       - name: es-master
         image: raaftech/elasticsearch:latest
@@ -72,6 +75,8 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: storage
+      annotations:
+        pv.beta.kubernetes.io/gid: "185"
     spec:
       storageClassName: glusterfs-storage-block
       accessModes: [ ReadWriteOnce ]

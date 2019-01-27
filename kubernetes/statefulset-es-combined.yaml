@@ -18,6 +18,9 @@ spec:
         http: enabled
         role: combined
     spec:
+      securityContext:
+        runAsUser: "185"
+        fsGroup: "185"
       containers:
       - name: es-combined
         image: raaftech/elasticsearch:latest
@@ -72,9 +75,11 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: storage
+      annotations:
+        pv.beta.kubernetes.io/gid: "185"
     spec:
       storageClassName: glusterfs-storage-block
       accessModes: [ ReadWriteOnce ]
       resources:
         requests:
-          storage: 80Gi
+          storage: 10Gi

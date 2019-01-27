@@ -13,6 +13,9 @@ spec:
         http: disabled
         role: ingest
     spec:
+      securityContext:
+        runAsUser: "185"
+        fsGroup: "185"
       containers:
       - name: es-ingest
         image: raaftech/elasticsearch:latest
