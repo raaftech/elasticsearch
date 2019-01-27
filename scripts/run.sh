@@ -2,14 +2,31 @@
 
 echo "Starting Elasticsearch ${ES_VERSION}"
 
-BASE=/elasticsearch
+# List the directories recursively and pause.
+echo "* Mount output: "
+mount
+echo ""
+
+echo "Listing output:"
+ls -lR "$HOME"
+echo ""
+
+sleep 60
+
+# (Try to) Make sure that we own our data and pause.
+echo "Attempting to take ownership:"
+chown -R elasticsearch:elasticsearch "$HOME"
+echo ""
+
+sleep 60
+
 
 # Handle discovery service setting. When unset, take out the
 # ping.unicast.hosts setting. Usually unset when running
 # standalone in Docker directly but needed by Kubernetes.
 if [ -z "$ES_DISCOVERY_SERVICE" ]; then
-    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*ping.unicast.hosts:.*$' > "/tmp/elasticsearch.yml"
-    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+    cat "$HOME/config/elasticsearch.yml" | grep -v '^.*ping.unicast.hosts:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$HOME/config/elasticsearch.yml"
 fi
 
 # Rewrite ES_NODE_NAME to HOSTNAME if the former is unset, which
@@ -17,8 +34,8 @@ fi
 # In Kubernetes, one usually sets ES_NODE_NAME to metadata.name.
 if [ -z "$ES_NODE_NAME" ]; then
     ES_NODE_NAME="$HOSTNAME"
-    cat "$BASE/config/elasticsearch.yml" | sed 's|\${ES_NODE_NAME}|\${HOSTNAME}|g' > "/tmp/elasticsearch.yml"
-    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+    cat "$HOME/config/elasticsearch.yml" | sed 's|\${ES_NODE_NAME}|\${HOSTNAME}|g' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$HOME/config/elasticsearch.yml"
 fi
 
 # If version is 6.5.0 or higher, we allow setting of
@@ -26,16 +43,16 @@ fi
 ES_VERSION_CONCAT=$(echo $ES_VERSION | sed -e 's|[a-z]||g' -e 's|[A-Z]||g' -e 's|\.||g' -e 's|_||g' -e 's|\-||g' | cut -c 1-3)
 if (( $ES_VERSION_CONCAT < 650 )); then
     # Not 6.5+, take out 'store:' line.
-    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*store:.*$' > "/tmp/elasticsearch.yml"
-    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+    cat "$HOME/config/elasticsearch.yml" | grep -v '^.*store:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$HOME/config/elasticsearch.yml"
 
     # Not 6.5+, take out 'allow_mmapfs:' line.
-    cat "$BASE/config/elasticsearch.yml" | grep -v '^.*allow_mmapfs:.*$' > "/tmp/elasticsearch.yml"
-    mv "/tmp/elasticsearch.yml" "$BASE/config/elasticsearch.yml"
+    cat "$HOME/config/elasticsearch.yml" | grep -v '^.*allow_mmapfs:.*$' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$HOME/config/elasticsearch.yml"
 
     # Not 6.5+, take out '[%node_name]' element.
-    cat "$BASE/config/log4j2.properties" | sed 's|\[%node_name\]%marker |%marker|g' > "/tmp/log4j2.properties"
-    mv /tmp/log4j2.properties "$BASE/config/log4j2.properties"
+    cat "$HOME/config/log4j2.properties" | sed 's|\[%node_name\]%marker |%marker|g' > "/tmp/log4j2.properties"
+    mv /tmp/log4j2.properties "$HOME/config/log4j2.properties"
 fi
 
 # Allow for memlock if enabled.
@@ -84,7 +101,7 @@ if [ "${ES_SHARD_ALLOCATION_AWARENESS_ENABLED}" == "true" ]; then
     ES_NODE_NAME="${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}-${ES_NODE_NAME}"
 
     # Add the entry to the configuration file.
-    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" >> $BASE/config/elasticsearch.yml
+    echo "node.attr.${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE}" >> $HOME/config/elasticsearch.yml
 
     if [ "$ES_NODE_MASTER" == "true" ]; then
         echo "cluster.routing.allocation.awareness.attributes: ${ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY}" >> "${BASE}"/config/elasticsearch.yml
@@ -103,7 +120,7 @@ if [[ $(whoami) == "root" ]]; then
         echo "Changing ownership of /data folder"
         chown -R elasticsearch:elasticsearch /data
     fi
-    exec su-exec elasticsearch $BASE/bin/elasticsearch $ES_EXTRA_ARGS
+    exec su-exec elasticsearch $HOME/bin/elasticsearch $ES_EXTRA_ARGS
 else
     # The container's first process is not running as 'root',
     # it does not have the rights to chown. However, we may
