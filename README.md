@@ -26,6 +26,12 @@ You need a reasonably recent version of Docker to build and run the Docker image
 
 To run on Kubernetes, you need a Kubernetes cluster. I tested with version 1.10 and 1.12 and the Kubernetes services included with OpenShift 3.9. Memory and compute requirements might vary wildly, but to give you an idea: We're running a fairly simple 12 node Elasticsearch cluster with 3 masters, 3 data nodes, 3 ingest nodes and 3 client nodes, totalling about 12 cores, 60GB of ram and 100GB of storage.
 
+Speaking about storage, bear in mind that there are *significant known issues* with Elasticsearch data on GlusterFS backed storage. The GlusterFS team is aware of these issues and is tracking them on [this GitHub issue page](https://github.com/gluster/glusterfs/issues/517). Red Hat is also aware of these issues as documented [here](https://bugzilla.redhat.com/show_bug.cgi?id=1318493), [here](https://bugzilla.redhat.com/show_bug.cgi?id=1426548) and [here](https://bugzilla.redhat.com/show_bug.cgi?id=1430659).
+
+If you are using GlusterFS before version 4.1, you **must** use the [GlusterFS Block](https://github.com/gluster/gluster-kubernetes/blob/master/docs/design/gluster-block-provisioning.md) variant of GlusterFS storage or you will run into lockfile modification issues due to a known issue with ctime/mtime/utime variance(see links in the previous paragraph for more details). If you're running a version of GlusterFS 4.1 or newer, make sure you enable the `ctime` feature on your data volumes.
+
+A small note about memory settings: This setup assumes a JVM of version 1.8.0 R191 or newer. The reason for that is that these versions of the JVM have the `+EnableContainerSupport` and `+InitialRAMPercentage` and `+MaxRAMPercentage` features, which we use to dynamically provide the dockerized JVM with the right amount of heap based on the memory assigned to the Pod via the Kubernetes YAML file. In other words, you don't need to tell the JVM explicitly how much memory to use, it does that automatically based on the max memory assigned to the pod.
+
 Finally, I'm assuming a fairly recent modern OS environment where you have the `docker` and `kubectl` commands available via your PATH environment variable and know how to get by using either `cmd.exe`, `powershell`, `ksh` or `bash`.
 
 
