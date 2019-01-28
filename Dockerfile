@@ -25,7 +25,7 @@ ENV HOME="/elasticsearch" \
     ES_HTTP_CORS_ALLOW_ORIGIN="*" \
     ES_HTTP_CORS_ENABLE="true" \
     # https://github.com/elastic/elasticsearch/issues/29773
-    #ES_INDEX_AUTO_CREATE='.kibana_*,.monitoring-*,.security,.triggered_watches,.watcher-history-*,.watches' \
+    #ES_INDEX_AUTO_CREATE=".kibana*,.logstash*,.management*,.monitoring*,.security*,.triggered_watches*,.watcher-history*,.watches*" \
     ES_INDEX_AUTO_CREATE="true" \
     ES_INDEX_STORE_TYPE="fs" \
     ES_MAX_LOCAL_STORAGE_NODES="1" \

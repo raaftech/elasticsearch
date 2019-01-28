@@ -205,7 +205,7 @@ Enable or disable cross-origin resource sharing, i.e. whether a client on anothe
 
 Default: `true`
 
-By default, POST'ing a document to a non-existent index automatically creates the index if it has not been created before. Automatic index creation can be disabled by setting this environment variable to `false`. In such a case, the index needs to be created explicitly before POST'ing documents to it.
+By default, POST'ing a document to a non-existent index automatically creates the index if it has not been created before. Automatic index creation can be disabled by setting this environment variable to `.kibana*,.logstash*,.management*,.monitoring*,.security*,.triggered_watches*,.watcher-history*,.watches*`. In such a case, an index needs to be created explicitly before POST'ing documents to it. Notice that it cannot simply be `false` - the value has to be a whitelist of indexes that can be auto-created; the list in this example is an up-to-date list of well-known system indices.
 
 
 ### ENV ES_INDEX_STORE_TYPE
