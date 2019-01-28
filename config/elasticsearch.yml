@@ -1,5 +1,29 @@
+action:
+  auto_create_index: ${ES_INDEX_AUTO_CREATE}
+
+bootstrap:
+  memory_lock: ${ES_MEMORY_LOCK}
+
 cluster:
   name: ${ES_CLUSTER_NAME}
+  remote.connect: false
+
+discovery:
+  zen:
+    ping.unicast.hosts: ${ES_DISCOVERY_SERVICE}
+    minimum_master_nodes: ${ES_NUMBER_OF_MASTERS}
+
+http:
+  compression: true
+  cors:
+    enabled: ${ES_HTTP_CORS_ENABLE}
+    allow-origin: ${ES_HTTP_CORS_ALLOW_ORIGIN}
+
+index:
+  store.type: ${ES_INDEX_STORE_TYPE}
+
+network:
+  host: ${ES_NETWORK_HOST}
 
 node:
   master: ${ES_NODE_MASTER}
@@ -10,29 +34,9 @@ node:
   store:
     allow_mmapfs: ${ES_ALLOW_MMAPFS}
 
-processors: ${PROCESSORS:1}
-
-network.host: ${ES_NETWORK_HOST}
-
 path:
   repo: ${ES_REPO_LOCATIONS}
 
-bootstrap:
-  memory_lock: ${ES_MEMORY_LOCK}
-
-http:
-  compression: true
-  cors:
-    enabled: ${ES_HTTP_CORS_ENABLE}
-    allow-origin: ${ES_HTTP_CORS_ALLOW_ORIGIN}
-
-discovery:
-  zen:
-    ping.unicast.hosts: ${ES_DISCOVERY_SERVICE}
-    minimum_master_nodes: ${ES_NUMBER_OF_MASTERS}
-
-index.store.type: ${ES_INDEX_STORE_TYPE}
+processors: ${PROCESSORS:1}
 
 xpack.ml.enabled: false
-
-cluster.remote.connect: false

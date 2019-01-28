@@ -3,6 +3,7 @@ kind: StatefulSet
 metadata:
   name: es-data
   labels:
+    app: elasticsearch
     component: elasticsearch
 spec:
   selector:
@@ -32,6 +33,8 @@ spec:
           value: "es-cluster"
         - name: ES_DISCOVERY_SERVICE
           value: "es-transport"
+        - name: ES_INDEX_AUTO_CREATE
+          value: ".kibana_*,.monitoring-*,.security,.triggered_watches,.watcher-history-*,.watches"
         - name: ES_INDEX_STORE_TYPE
           value: "niofs"
         - name: ES_NODE_DATA

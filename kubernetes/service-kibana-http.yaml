@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: kibana-http
   labels:
+    app: elasticsearch
     component: kibana
 spec:
   selector:

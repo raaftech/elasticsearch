@@ -201,6 +201,13 @@ Default: `true`
 Enable or disable cross-origin resource sharing, i.e. whether a client on another origin can execute requests against Elasticsearch. For more details, see the rather excellent Wikipedia page on [Cross-Origin Resource Sharing](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 
+### ES_INDEX_AUTO_CREATE
+
+Default: `true`
+
+By default, POST'ing a document to a non-existent index automatically creates the index if it has not been created before. Automatic index creation can be disabled by setting this environment variable to `false`. In such a case, the index needs to be created explicitly before POST'ing documents to it.
+
+
 ### ENV ES_INDEX_STORE_TYPE
 
 Default: `fs`

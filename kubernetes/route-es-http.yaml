@@ -3,6 +3,7 @@ kind: Route
 metadata:
   name: elasticsearch
   labels:
+    app: elasticsearch
     component: elasticsearch
   annotations:
     haproxy.router.openshift.io/timeout: 4m

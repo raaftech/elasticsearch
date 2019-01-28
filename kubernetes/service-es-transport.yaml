@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: es-transport
   labels:
+    app: elasticsearch
     component: elasticsearch
 spec:
   selector:

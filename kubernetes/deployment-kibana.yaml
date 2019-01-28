@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   name: kibana
   labels:
+    app: elasticsearch
     component: kibana
 spec:
   replicas: 1
