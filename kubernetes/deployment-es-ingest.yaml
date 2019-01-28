@@ -5,7 +5,7 @@ metadata:
   labels:
     component: elasticsearch
 spec:
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
