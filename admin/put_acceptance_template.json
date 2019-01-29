@@ -1,0 +1,16 @@
+{
+  "index_patterns": [
+    "acceptance*"
+  ],
+  "order": 1,
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1,
+    "index.lifecycle.name": "acceptance_policy"
+  },
+  "mappings": {
+    "_doc": {
+      "dynamic": "strict"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "index_patterns": [
+    "testing*"
+  ],
+  "order": 1,
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "index.lifecycle.name": "testing_policy"
+  },
+  "mappings": {
+    "_doc": {
+      "dynamic": "strict"
+    }
+  }
+}
