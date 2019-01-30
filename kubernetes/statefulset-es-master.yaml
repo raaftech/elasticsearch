@@ -24,7 +24,7 @@ spec:
         fsGroup: "185"
       containers:
       - name: es-master
-        image: raaftech/elasticsearch:latest
+        image: raaftech/elasticsearch:6.6.0
         imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS

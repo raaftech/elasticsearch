@@ -6,7 +6,7 @@ This project, inspired by [the work](https://github.com/pires/kubernetes-elastic
 
 In the sections below, you'll find out how to build and run this project's Docker image standalone and how to use the included kubernetes files to deploy an n-scale cluster, tested on Kubernetes 1.10+ and OpenShift 3.9.
 
-As of this writing (2018-11-26) these Dockerfiles have been used with Elasticsearch 6.4.3 6.5.0 and 6.5.1.
+As of this writing (2019-01-30) these Dockerfiles have been used with Elasticsearch 6.4.3, 6.5.0, 6.5.1, 6.5.4 and 6.6.0.
 
 
 ## Table of Contents

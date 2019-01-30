@@ -22,7 +22,7 @@ spec:
         fsGroup: "1000"
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana:6.5.4
+        image: docker.elastic.co/kibana/kibana:6.6.0
         imagePullPolicy: Always
         env:
         - name: CLUSTER_NAME

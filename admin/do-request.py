@@ -7,8 +7,13 @@ from base64 import b64encode
 from ConfigParser import ConfigParser
 from os.path import expanduser,isfile,sep
 from ssl import create_default_context, CERT_NONE
-from urllib2 import Request, urlopen
-from xml.dom.minidom import parseString
+
+try:
+    # For Python 3.0 and later..
+    from urllib.request import Request, urlopen
+except ImportError:
+    # Fall back to Python 2's urllib2.
+    from urllib2 import Request, urlopen
 
 # Version.
 version="Elasticsearch Request Runner 0.1."
@@ -32,11 +37,11 @@ parser.add_argument('-v', '--version', action='version', version=version)
 args = parser.parse_args()
 
 if args.file:
-    url = conf.get('soap', 'gtin_service')
+    url = conf.get('elasticsearch', 'baseurl')
     data = args.file.read()
 
-    username = conf.get('soap', 'user')
-    password = conf.get('soap', 'pass')
+    username = conf.get('elasticsearch', 'user')
+    password = conf.get('elasticsearch', 'pass')
 
     req =  Request(url, data)
     req.add_header("Authorization", "Basic %s" % b64encode('%s:%s' % (username, password)))
@@ -51,7 +56,7 @@ if args.file:
     res = urlopen(url=req, context=context).read()
 
 
-    print(parseString(res).toprettyxml(encoding='utf8'))
+    print(res)
 
 else:
     parser.print_help()
