@@ -39,8 +39,8 @@ ENV HOME="/elasticsearch" \
     ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
-    ES_VERSION="6.6.0"
-    #ES_VERSION="6.6.0-SNAPSHOT"
+    ES_VERSION="6.6.1"
+    #ES_VERSION="6.7.0-SNAPSHOT"
 
 # Separate environment block due to usage of previously set environment variables.
 ENV ES_ARCHIVE_TARBALL="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}.tar.gz" \
