@@ -36,9 +36,9 @@ parser.add_argument('-v', '--version', action='version', version=version)
 
 args = parser.parse_args()
 
-if args.file:
-    url = conf.get('elasticsearch', 'baseurl')
-    data = args.file.read()
+if args.body:
+    url = conf.get('elasticsearch', 'baseurl') + args.path
+    data = args.body.read()
 
     username = conf.get('elasticsearch', 'user')
     password = conf.get('elasticsearch', 'pass')
@@ -46,7 +46,7 @@ if args.file:
     req =  Request(url, data)
     req.add_header("Authorization", "Basic %s" % b64encode('%s:%s' % (username, password)))
     req.add_header('Content-Type', 'text/xml')
-
+    req.get_method = lambda: args.method
 
     # Disable SSL/TLS certificate validation.
     context = create_default_context()
