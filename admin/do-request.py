@@ -45,7 +45,7 @@ if args.body:
 
     req =  Request(url, data)
     req.add_header("Authorization", "Basic %s" % b64encode('%s:%s' % (username, password)))
-    req.add_header('Content-Type', 'text/xml')
+    req.add_header('Content-Type', 'application/json')
     req.get_method = lambda: args.method
 
     # Disable SSL/TLS certificate validation.
