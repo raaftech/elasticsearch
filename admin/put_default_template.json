@@ -10,7 +10,7 @@
   },
   "mappings": {
     "_doc": {
-      "dynamic": "true"
+      "dynamic": "strict"
     }
   }
 }
