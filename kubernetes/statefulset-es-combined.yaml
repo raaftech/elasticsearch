@@ -20,11 +20,11 @@ spec:
         role: combined
     spec:
       securityContext:
-        runAsUser: "185"
-        fsGroup: "185"
+        runAsUser: 185
+        fsGroup: 185
       containers:
       - name: es-combined
-        image: raaftech/elasticsearch:6.6.0
+        image: raaftech/elasticsearch:latest
         imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS
@@ -59,7 +59,7 @@ spec:
               resource: limits.cpu
         resources:
           requests:
-            cpu: 0.25
+            cpu: "0.25"
             memory: 8Gi
           limits:
             cpu: 1

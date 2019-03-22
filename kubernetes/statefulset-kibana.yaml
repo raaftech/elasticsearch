@@ -18,11 +18,11 @@ spec:
         http: enabled
     spec:
       securityContext:
-        runAsUser: "1000"
-        fsGroup: "1000"
+        runAsUser: 1000
+        fsGroup: 1000
       containers:
       - name: kibana
-        image: docker.elastic.co/kibana/kibana:6.6.0
+        image: docker.elastic.co/kibana/kibana:latest
         imagePullPolicy: Always
         env:
         - name: CLUSTER_NAME
@@ -41,7 +41,7 @@ spec:
               resource: limits.cpu
         resources:
           requests:
-            cpu: 0.25
+            cpu: "0.25"
             memory: 2Gi
           limits:
             cpu: 1

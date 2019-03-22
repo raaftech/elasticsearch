@@ -20,11 +20,11 @@ spec:
         role: data
     spec:
       securityContext:
-        runAsUser: "185"
-        fsGroup: "185"
+        runAsUser: 185
+        fsGroup: 185
       containers:
       - name: es-data
-        image: raaftech/elasticsearch:6.6.0
+        image: raaftech/elasticsearch:latest
         imagePullPolicy: Always
         env:
         - name: ES_ALLOW_MMAPFS
