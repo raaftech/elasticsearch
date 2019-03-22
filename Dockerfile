@@ -39,7 +39,7 @@ ENV HOME="/elasticsearch" \
     ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
-    ES_VERSION="6.5.1"
+    ES_VERSION="6.5.4"
     #ES_VERSION="6.7.0-SNAPSHOT"
 
 # Separate environment block due to usage of previously set environment variables.
