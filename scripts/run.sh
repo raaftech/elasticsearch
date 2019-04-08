@@ -36,6 +36,12 @@ if (( $ES_VERSION_CONCAT < 650 )); then
     mv /tmp/log4j2.properties "$HOME/config/log4j2.properties"
 fi
 
+if (( $ES_VERSION_CONCAT >= 670 )); then 
+    # allow_mmapfs was renamed to allow_mmap, rename.
+    cat "$HOME/config/elasticsearch.yml" | sed 's|allow_mmapfs|allow_mmap|g' > "/tmp/elasticsearch.yml"
+    mv "/tmp/elasticsearch.yml" "$HOME/config/elasticsearch.yml"
+fi
+
 # Allow for memlock if enabled.
 if [ "$ES_MEMORY_LOCK" == "true" ]; then
     ulimit -l unlimited
