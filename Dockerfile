@@ -39,8 +39,8 @@ ENV HOME="/elasticsearch" \
     ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
-    ES_VERSION="6.6.2"
-    #ES_VERSION="6.7.0-SNAPSHOT"
+    ES_VERSION="6.7.1"
+    #ES_VERSION="7.0.0-SNAPSHOT"
 
 # Separate environment block due to usage of previously set environment variables.
 ENV ES_ARCHIVE_TARBALL="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}.tar.gz" \
@@ -61,13 +61,16 @@ LABEL   architecture="x86_64" \
 
 
 # Copy the Elasticsearch customized configuration files.
-COPY --chown=185:0 config /elasticsearch/custom
+COPY config /elasticsearch/custom
 
 # Copy the Elasticsearch run script.
-COPY --chown=185:0 scripts/run.sh /elasticsearch/run.sh
+COPY scripts/run.sh /elasticsearch/run.sh
 
 # Copy the Elasticsearch setup script.
 COPY scripts/setup.sh /tmp/setup.sh
+
+# Set correct ownership.
+RUN chown -R 185:0 /elasticsearch
 
 # Run setup script.
 RUN chmod +x /tmp/setup.sh && /tmp/setup.sh ${ES_ARCHIVE_TARBALL} ${ES_ARCHIVE_CHECKSUM} ${ES_ARCHIVE_KEYID} ${ES_DISCOVERY_SERVICE} ${PROXY_URL} ${NO_PROXY}

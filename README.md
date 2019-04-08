@@ -6,7 +6,7 @@ This project, inspired by [the work](https://github.com/pires/kubernetes-elastic
 
 In the sections below, you'll find out how to build and run this project's Docker image standalone and how to use the included kubernetes files to deploy an n-scale cluster, tested on Kubernetes 1.10+ and OpenShift 3.9.
 
-As of this writing (2019-03-22) these Dockerfiles have been used with Elasticsearch 6.4.3, 6.5.0, 6.5.1, 6.5.4, 6.6.0, 6.6.1 and 6.6.2.
+As of this writing (2019-04-08) these Dockerfiles have been used with Elasticsearch 6.4.3, 6.5.4, 6.6.2 and 6.7.1.
 
 
 ## Table of Contents
@@ -322,7 +322,7 @@ When this value is a path to a file within the container, the last line of that 
 
 ### ENV ES_VERSION
 
-Default: `6.5.1`
+Default: `whatever is the latest stable`
 
-Specifies the Elasticsearch version. Only has effect at `docker build` time. You can specify a stable version like `6.5.1` or `6.4.3`. Snapshot versions can be specified as `6.6.0-SNAPSHOT`. Note that snapshots are not on the regular downloadable artifacts server. See `ES_ARCHIVE_BASEURL` for details about how to change where the artifacts are fetched from.
+Specifies the Elasticsearch version. Only has effect at `docker build` time. You can specify a stable version like `6.7.1` or `6.6.2`. Snapshot versions can be specified as `7.0.0-SNAPSHOT`. Note that snapshots are not on the regular downloadable artifacts server. See `ES_ARCHIVE_BASEURL` for details about how to change where the artifacts are fetched from.
 
