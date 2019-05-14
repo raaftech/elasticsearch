@@ -39,12 +39,12 @@ ENV HOME="/elasticsearch" \
     ES_SHARD_ALLOCATION_AWARENESS_ENABLED="false" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_KEY="" \
     ES_SHARD_ALLOCATION_AWARENESS_ATTRIBUTE_VALUE="" \
-    ES_VERSION="6.7.1"
-    #ES_VERSION="7.0.0-SNAPSHOT"
+    ES_VERSION="7.0.1"
+    #ES_VERSION="7.1.0-SNAPSHOT"
 
 # Separate environment block due to usage of previously set environment variables.
-ENV ES_ARCHIVE_TARBALL="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}.tar.gz" \
-    ES_ARCHIVE_CHECKSUM="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}.tar.gz.asc"
+ENV ES_ARCHIVE_TARBALL="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}-no-jdk-linux-x86_64.tar.gz" \
+    ES_ARCHIVE_CHECKSUM="${ES_ARCHIVE_BASEURL}/elasticsearch-${ES_VERSION}-no-jdk-linux-x86_64.tar.gz.asc"
 
 # Image labels for Kubernetes and OpenShift.
 LABEL   architecture="x86_64" \
