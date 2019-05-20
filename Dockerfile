@@ -84,7 +84,7 @@ RUN rm -rf /home
 USER 185
 
 # Volumes for Elasticsearch data and logs.
-VOLUME ["/elasticsearch/data", "/elasticsearch/logs"]
+VOLUME ["/elasticsearch/data"]
 
 # Expose the API and node inter-traffic ports.
 EXPOSE 9200 9300
